@@ -187,24 +187,29 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    imgs.forEach((img) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "relative";
+    imgs.forEach((img, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "relative";
 
-      const imageEl = document.createElement("img");
-      imageEl.src = img.src;
-      imageEl.alt = img.alt || "";
-      imageEl.className = "w-full h-auto block rounded-lg";
+    // Add bottom spacing only if NOT the last image
+    if (index < imgs.length - 1) {
+        wrapper.classList.add("mb-4");
+    }
 
-      const caption = document.createElement("p");
-      caption.className =
-        "absolute bottom-2 left-2 text-[0.7rem] text-white px-2 py-1 rounded-full";
-      caption.style.backgroundColor = "#008080";
-      caption.textContent = img.alt || "";
+    const imageEl = document.createElement("img");
+    imageEl.src = img.src;
+    imageEl.alt = img.alt || "";
+    imageEl.className = "w-full h-auto block rounded-lg";
 
-      wrapper.appendChild(imageEl);
-      wrapper.appendChild(caption);
-      galleryContainer.appendChild(wrapper);
+    const caption = document.createElement("p");
+    caption.className =
+        "absolute bottom-2 left-2 text-xs text-white px-2 py-1 rounded-full";
+    caption.style.backgroundColor = "#008080";
+    caption.textContent = img.alt || "";
+
+    wrapper.appendChild(imageEl);
+    wrapper.appendChild(caption);
+    galleryContainer.appendChild(wrapper);
     });
 
     refreshAllScrollIndicators();
