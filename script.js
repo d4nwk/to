@@ -183,7 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!imgs || imgs.length === 0) {
       galleryContainer.innerHTML =
         '<p class="text-xs text-base-content/60">No screenshots yet for this project.</p>';
-      refreshAllScrollIndicators();
+      requestAnimationFrame(() => {
+        refreshAllScrollIndicators();
+      });
       return;
     }
 
