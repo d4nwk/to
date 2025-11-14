@@ -1,4 +1,38 @@
+let isAuthorised = false;
+
+// Simple password gate
+(function passwordGate() {
+  const PASSWORD = "904672";
+  const maxAttempts = 3;
+  let attempts = 0;
+
+  while (attempts < maxAttempts) {
+    const input = prompt(
+      "This page is currently password-protected.\n\nEnter the password to continue:"
+    );
+
+    if (input === null) {
+      break;
+    }
+
+    if (input === PASSWORD) {
+      isAuthorised = true;
+      break;
+    } else {
+      alert("Incorrect password. Please try again.");
+      attempts += 1;
+    }
+  }
+
+  if (!isAuthorised) {
+    document.body.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,sans-serif;text-align:center;padding:1rem;background-color:#f5f5f5;"><div><h1 style="font-size:1.25rem;font-weight:600;margin-bottom:0.5rem;">Access denied</h1><p style="font-size:0.9rem;color:#555;">Incorrect or no password entered. Reload the page to try again.</p></div></div>';
+  }
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
+  if (!isAuthorised) return;
+
   /* ---------- NAV / SECTIONS ---------- */
 
   const navLinks = document.querySelectorAll(".nav-link");
@@ -38,9 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- PORTFOLIO GALLERY DATA ---------- */
 
-  // NOTE: I don't have direct access to your dev.to images from here,
-  // so these use placeholder URLs. Swap them out later with your real
-  // screenshot URLs when you have them handy.
   const galleryData = {
     "he-dashboards": [
       {
@@ -111,7 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
       imageEl.className = "w-full h-auto block rounded-lg";
 
       const caption = document.createElement("p");
-      caption.className = "absolute bottom-2 left-2 text-xs italic text-white px-2 py-1 rounded-full";
+      caption.className =
+        "absolute bottom-2 left-2 text-[0.7rem] text-white px-2 py-1 rounded-full";
       caption.style.backgroundColor = "#008080";
       caption.textContent = img.alt || "";
 
@@ -122,15 +154,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setActiveProject(projectId) {
-    // Remove active styling from all cards and set opacity
     projectCards.forEach((card) => {
       const isActive = card.dataset.projectId === projectId;
-      
+
       if (isActive) {
-        // Active card gets 50% opacity
         card.style.backgroundColor = "var(--project-card-active)";
       } else {
-        // Inactive cards get 25% opacity
         card.style.backgroundColor = "var(--project-card-inactive)";
       }
     });

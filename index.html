@@ -18,9 +18,9 @@
 
     <style>
       :root {
-        --sidebar-bg: rgba(176, 211, 210, 0.5);
         --project-card-active: rgba(176, 211, 210, 0.5);
         --project-card-inactive: rgba(176, 211, 210, 0.25);
+        --sidebar-bg: var(--project-card-active);
         --accent: #008080;
         --accent-hover: rgba(0, 128, 128, 0.25);
       }
@@ -112,7 +112,10 @@
     </style>
   </head>
   <body style="background-color: var(--sidebar-bg);">
-    <main class="flex h-screen w-screen flex-col-reverse sm:flex-row" style="background-color: var(--sidebar-bg);">
+    <main
+      class="flex h-screen w-screen flex-col-reverse sm:flex-row"
+      style="background-color: var(--sidebar-bg);"
+    >
       <!-- Sidebar nav -->
       <nav
         class="sidebar h-20 w-screen flex flex-row items-center justify-center sm:h-screen sm:w-24 sm:flex-col sm:relative duration-300"
@@ -135,10 +138,10 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-              <line x1="9" x2="9.01" y1="9" y2="9"/>
-              <line x1="15" x2="15.01" y1="9" y2="9"/>
+              <circle cx="12" cy="12" r="10" />
+              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+              <line x1="9" x2="9.01" y1="9" y2="9" />
+              <line x1="15" x2="15.01" y1="9" y2="9" />
             </svg>
           </div>
           <span class="nav-label truncate text-sm text-base-content">Me</span>
@@ -163,9 +166,9 @@
               stroke-linejoin="round"
               style="transform: scaleX(-1);"
             >
-              <rect width="7" height="18" x="3" y="3" rx="1"/>
-              <rect width="7" height="7" x="14" y="3" rx="1"/>
-              <rect width="7" height="7" x="14" y="14" rx="1"/>
+              <rect width="7" height="18" x="3" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="14" rx="1" />
             </svg>
           </div>
           <span class="nav-label truncate text-sm text-base-content"
@@ -176,7 +179,7 @@
 
       <!-- Main content panel -->
       <section
-        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:m-2"
+        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:rounded-l-none sm:mt-2 sm:mb-2 sm:mr-2"
       >
         <!-- Me section -->
         <div
@@ -186,12 +189,14 @@
           <div
             class="m-auto w-full py-10 h-auto sm:w-10/12 lg:w-8/12 xl:w-6/12 animate-fade-in"
           >
-            <div class="flex flex-col sm:flex-row mx-4 duration-200 items-center sm:items-start">
+            <div
+              class="flex flex-col sm:flex-row mx-4 duration-200 items-center sm:items-start"
+            >
               <div class="avatar flex-shrink-0">
                 <div
                   class="h-28 w-28 sm:w-36 sm:h-36 duration-200 overflow-hidden rounded-lg bg-base-300 flex items-center justify-center text-xl"
                 >
-                  <img 
+                  <img
                     src="https://media.licdn.com/dms/image/v2/D4D03AQEPjwu33HauEg/profile-displayphoto-scale_400_400/B4DZfuKQ..GkAk-/0/1752047361275?e=1764806400&v=beta&t=Lz8k5jrwF-wpGrX4N27wPQddkdGnUOsJEdTDyGvefuk"
                     alt="Dan Stollenwerk"
                     class="w-full h-full object-cover"
@@ -203,9 +208,7 @@
                 class="sm:ml-4 sm:mt-0 ml-0 mt-4 flex flex-col duration-300 space-y-1 flex-1"
               >
                 <h1 class="font-bold text-3xl">Dan Stollenwerk</h1>
-                <h2 class="text-lg">
-                  Business Intelligence Developer
-                </h2>
+                <h2 class="text-lg">Business Intelligence Developer</h2>
                 <p class="text-xs">
                   Business Intelligence developer working with dashboards, ETL
                   pipelines and data-driven tooling for universities and
@@ -297,7 +300,9 @@
                 <!-- Escentral: BI Developer -->
                 <div class="flex mt-4 flex-col">
                   <div class="flex">
-                    <div class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-md"></div>
+                    <div
+                      class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-md"
+                    ></div>
                     <p class="antialiased text-base font-extrabold">
                       Escentral
                     </p>
@@ -306,16 +311,14 @@
                   <div class="flex mb-2">
                     <div class="w-2 mr-2 mt-2">
                       <div
-                        class="w-2 h-2 bg-secondary rounded-full"
+                        class="w-2 h-2 bg-[var(--accent)] rounded-full"
                       ></div>
                     </div>
                     <div>
                       <p class="antialiased text-sm font-semibold">
                         Business Intelligence Developer
                       </p>
-                      <p
-                        class="antialiased italic text-xs font-light"
-                      >
+                      <p class="antialiased text-xs font-light">
                         May 2025 – present · Full-time
                       </p>
                       <p class="antialiased text-xs font-medium">
@@ -333,16 +336,14 @@
                   <div class="flex mb-2">
                     <div class="w-2 mr-2 mt-2">
                       <div
-                        class="w-2 h-2 bg-secondary rounded-full"
+                        class="w-2 h-2 bg-[var(--accent)] rounded-full"
                       ></div>
                     </div>
                     <div>
                       <p class="antialiased text-sm font-semibold">
                         Graduate Data Analyst
                       </p>
-                      <p
-                        class="antialiased italic text-xs font-light"
-                      >
+                      <p class="antialiased text-xs font-light">
                         Apr 2024 – May 2025 · Full-time
                       </p>
                       <p class="antialiased text-xs font-medium">
@@ -369,20 +370,29 @@
         <!-- Portfolio section -->
         <div
           data-section-id="portfolio"
-          class="section hidden h-full overflow-y-auto scrollbar-hide"
+          class="section hidden h-full overflow-hidden"
         >
           <div
-            class="m-auto w-full py-10 h-auto sm:w-11/12 lg:w-10/12 xl:w-9/12 animate-fade-in"
+            class="m-auto w-full py-10 h-full sm:w-11/12 lg:w-10/12 xl:w-9/12 animate-fade-in"
           >
-            <div class="mx-4">
-              <h1 class="font-bold text-3xl mb-1">Portfolio</h1>
-              <p class="text-xs text-base-content/70 mb-4">
-                A selection of dashboards, ETL pipelines and tools.
-              </p>
+            <div class="mx-4 h-full flex flex-col">
+              <!-- Sticky-style header (outside scroll areas) -->
+              <div class="flex-none">
+                <h1 class="font-bold text-3xl mb-1">Portfolio</h1>
+                <p class="text-xs text-base-content/70 mb-2">
+                  A selection of dashboards, ETL pipelines and tools.
+                </p>
+              </div>
 
-              <div class="flex flex-col md:flex-row gap-6">
+              <!-- Scrollable columns -->
+              <div
+                class="flex-1 flex flex-col md:flex-row gap-6 mt-2 min-h-0"
+              >
                 <!-- Left: single-column list of projects -->
-                <div class="md:w-5/12 space-y-4" id="project-list">
+                <div
+                  class="md:w-5/12 space-y-4 overflow-y-auto pr-1 scrollbar-hide"
+                  id="project-list"
+                >
                   <!-- Project 1 -->
                   <div
                     class="card shadow-sm cursor-pointer transition-all duration-200"
@@ -521,10 +531,10 @@
                 </div>
 
                 <!-- Right: gallery for hovered/active project -->
-                <div class="md:flex-1">
+                <div class="md:flex-1 overflow-y-auto pl-1 scrollbar-hide">
                   <div
                     id="project-gallery"
-                    class="flex flex-col gap-4"
+                    class="flex flex-col gap-4 pb-4"
                   >
                     <!-- Images injected by script.js -->
                   </div>
