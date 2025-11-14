@@ -111,7 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
       imageEl.className = "w-full h-auto block rounded-lg";
 
       const caption = document.createElement("p");
-      caption.className = "absolute bottom-2 left-2 text-xs italic text-white bg-black/50 px-2 py-1 rounded";
+      caption.className = "absolute bottom-2 left-2 text-xs italic text-white px-2 py-1 rounded-full";
+      caption.style.backgroundColor = "#008080";
       caption.textContent = img.alt || "";
 
       wrapper.appendChild(imageEl);
