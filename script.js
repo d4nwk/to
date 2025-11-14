@@ -1,38 +1,23 @@
-// Build filter tabs dynamically from the project cards
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = Array.from(document.querySelectorAll(".project-card"));
-  const tabsContainer = document.querySelector("[data-filter-tabs]");
-  const yearSpan = document.getElementById("year");
+// Simple navigation controller
+document.addEventListener('DOMContentLoaded', () => {
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('.section');
 
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
+  navItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      // Update active nav item
+      navItems.forEach((nav) => nav.classList.remove('active'));
+      item.classList.add('active');
 
-  if (!cards.length || !tabsContainer) return;
-
-  const categories = ["All", ...new Set(cards.map((c) => c.dataset.category))];
-
-  categories.forEach((category, index) => {
-    const button = document.createElement("button");
-    button.className =
-      "filter-tab" + (index === 0 ? " filter-tab--active" : "");
-    button.textContent = category;
-    button.dataset.filter = category;
-
-    button.addEventListener("click", () => {
-      // Active state
-      document.querySelectorAll(".filter-tab").forEach((btn) => {
-        btn.classList.toggle("filter-tab--active", btn === button);
+      // Show corresponding section
+      sections.forEach((section) => {
+        section.classList.remove('active');
       });
-
-      // Show/hide cards
-      cards.forEach((card) => {
-        const match =
-          category === "All" || card.dataset.category === category;
-        card.style.display = match ? "" : "none";
-      });
+      const targetId = item.getAttribute('data-target');
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
     });
-
-    tabsContainer.appendChild(button);
   });
 });

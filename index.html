@@ -4,211 +4,152 @@
     <meta charset="UTF-8" />
     <title>Dan Stollenwerk · Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Portfolio of Dan Stollenwerk – Business Intelligence developer working with data, dashboards and digital products."
-    />
-    <!-- Optional Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="shell shell--header">
-        <div class="brand">
-          <span class="brand__dot"></span>
-          <span class="brand__text">Dan Stollenwerk</span>
-        </div>
+    <!-- Sidebar navigation -->
+    <div class="sidebar">
+      <div class="sidebar-inner">
+        <h1 class="logo">DS</h1>
         <nav class="nav">
-          <a href="#projects" class="nav__link">Projects</a>
-          <a href="#about" class="nav__link">About</a>
-          <a href="mailto:you@example.com" class="nav__link nav__link--pill">
-            Contact
-          </a>
+          <button class="nav-item active" data-target="me" aria-label="About me">
+            <span class="icon" aria-hidden="true">👤</span>
+            <span class="label">Me</span>
+          </button>
+          <button class="nav-item" data-target="portfolio" aria-label="Portfolio">
+            <span class="icon" aria-hidden="true">🗂️</span>
+            <span class="label">Portfolio</span>
+          </button>
+          <button class="nav-item" data-target="apps" aria-label="Apps">
+            <span class="icon" aria-hidden="true">📱</span>
+            <span class="label">Apps</span>
+          </button>
         </nav>
       </div>
-    </header>
+    </div>
 
-    <main>
-      <!-- Hero -->
-      <section class="hero">
-        <div class="shell hero__inner">
-          <div class="hero__text">
-            <p className="hero__kicker">Portfolio</p>
-            <h1 class="hero__title">Turning messy data into clear stories.</h1>
-            <p class="hero__subtitle">
-              I’m Dan, a Business Intelligence developer working with
-              dashboards, ETL pipelines and data-driven tooling for universities
-              and organisations.
-            </p>
-            <div class="hero__actions">
-              <a href="#projects" class="btn btn--primary">View projects</a>
-              <a href="mailto:you@example.com" class="btn btn--ghost"
-                >Get in touch</a
-              >
+    <!-- Main content area -->
+    <main class="main">
+      <!-- Me Section -->
+      <section id="me" class="section active">
+        <div class="section-content">
+          <h2>About me</h2>
+          <div class="me-container">
+            <div class="profile">
+              <!-- Placeholder for a profile picture -->
+              <div class="avatar-placeholder"></div>
+            </div>
+            <div class="bio">
+              <p>
+                Hello! I'm Dan Stollenwerk, a Business Intelligence Developer at
+                Escentral. I specialise in designing and building data dashboards,
+                ETL pipelines and interactive tools to turn messy data into
+                clear, actionable insights. This portfolio showcases some of
+                my recent work.
+              </p>
+              <p>
+                Based in Seoul, I enjoy leveraging the latest BI tools like
+                Power BI, Tableau, Python and SQL to help organisations make
+                smarter decisions.
+              </p>
             </div>
           </div>
+          <h3>Experience</h3>
+          <ul class="timeline">
+            <li>
+              <div class="timeline-point"></div>
+              <div class="timeline-content">
+                <h4>Business Intelligence Developer</h4>
+                <span class="timeline-meta">Escentral (Jun 2025 – Present)</span>
+                <p>
+                  Developing dashboards and analytics solutions for higher
+                  education clients.
+                </p>
+              </div>
+            </li>
+            <!-- Additional experience entries can be added here -->
+          </ul>
+        </div>
+      </section>
 
-          <div class="hero__cards">
-            <div class="hero-pill hero-pill--yellow">
-              <span class="hero-pill__label">Dashboards</span>
-              <p class="hero-pill__text">Power BI &amp; Tableau reports.</p>
-            </div>
-            <div class="hero-pill hero-pill--blue">
-              <span class="hero-pill__label">Pipelines</span>
-              <p class="hero-pill__text">ETL and data shaping.</p>
-            </div>
-            <div class="hero-pill hero-pill--mint">
-              <span class="hero-pill__label">Apps</span>
-              <p class="hero-pill__text">Lightweight tools &amp; portals.</p>
-            </div>
+      <!-- Portfolio Section -->
+      <section id="portfolio" class="section">
+        <div class="section-content">
+          <h2>Portfolio</h2>
+          <p class="section-description">
+            A selection of my dashboards, pipelines and apps.
+          </p>
+          <div class="portfolio-grid">
+            <!-- Power BI article card -->
+            <article class="portfolio-card portfolio-card--yellow">
+              <div class="portfolio-card-content">
+                <h3>Power BI dashboards for HE institutions</h3>
+                <p>
+                  Collection of interactive dashboards designed and delivered to
+                  more than 30 UK higher education institutions.  Visualises
+                  functional suitability survey results, room utilisation and
+                  student/staff experience.
+                </p>
+                <a
+                  href="https://dev.to/4d/pbi-he-heo"
+                  target="_blank"
+                  rel="noopener"
+                  class="card-link"
+                >
+                  Read more
+                </a>
+              </div>
+            </article>
+
+            <!-- Utilisation Dashboard card -->
+            <article class="portfolio-card portfolio-card--coral">
+              <div class="portfolio-card-content">
+                <h3>Utilisation Dashboard</h3>
+                <p>
+                  Power BI report showing room occupancy, booking behaviour and
+                  timetable efficiency for a university client.
+                </p>
+                <a href="#" class="card-link">Details</a>
+              </div>
+            </article>
+
+            <!-- Course Performance card -->
+            <article class="portfolio-card portfolio-card--lilac">
+              <div class="portfolio-card-content">
+                <h3>Course Performance Overview</h3>
+                <p>
+                  Multi‑page Tableau dashboard highlighting progression, pass
+                  rates and cohort trends for academic departments.
+                </p>
+                <a href="#" class="card-link">Details</a>
+              </div>
+            </article>
+
+            <!-- Survey ETL Pipeline card -->
+            <article class="portfolio-card portfolio-card--mint">
+              <div class="portfolio-card-content">
+                <h3>Survey ETL Pipeline</h3>
+                <p>
+                  Automated pipeline to ingest, clean and reshape survey data
+                  into an analysis‑ready model.
+                </p>
+                <a href="#" class="card-link">Details</a>
+              </div>
+            </article>
+
+            <!-- Additional cards can be added here -->
           </div>
         </div>
       </section>
 
-      <!-- Projects -->
-      <section id="projects" class="projects">
-        <div class="shell">
-          <div class="projects__header">
-            <div>
-              <h2 class="section-title">Selected projects</h2>
-              <p class="section-subtitle">
-                A mix of dashboards, ETL work and small tools.
-              </p>
-            </div>
-            <div class="filter-tabs" data-filter-tabs></div>
-          </div>
-
-          <div class="project-grid">
-            <!-- Each card: adjust text and data-category to match your real work -->
-            <article
-              class="project-card project-card--yellow"
-              data-category="Dashboards"
-            >
-              <div class="project-card__icon">📊</div>
-              <h3 class="project-card__title">Utilisation Dashboard</h3>
-              <p class="project-card__body">
-                Power BI report for a university client showing room occupancy,
-                booking behaviour and timetable efficiency.
-              </p>
-              <p class="project-card__meta">
-                Dashboards · Power BI · Higher education
-              </p>
-            </article>
-
-            <article
-              class="project-card project-card--coral"
-              data-category="Dashboards"
-            >
-              <div class="project-card__icon">📈</div>
-              <h3 class="project-card__title">Course Performance Overview</h3>
-              <p class="project-card__body">
-                Multi-page Tableau dashboard highlighting progression, pass
-                rates and cohort trends for academic departments.
-              </p>
-              <p class="project-card__meta">
-                Dashboards · Tableau · Academic analytics
-              </p>
-            </article>
-
-            <article
-              class="project-card project-card--lilac"
-              data-category="Automation"
-            >
-              <div class="project-card__icon">⚙️</div>
-              <h3 class="project-card__title">Survey ETL Pipeline</h3>
-              <p class="project-card__body">
-                Automated pipeline to ingest, clean and reshape space-usage
-                survey data into an analysis-ready model.
-              </p>
-              <p class="project-card__meta">
-                Automation · Python · ETL · Scheduling
-              </p>
-            </article>
-
-            <article
-              class="project-card project-card--mint"
-              data-category="Tools"
-            >
-              <div class="project-card__icon">🧭</div>
-              <h3 class="project-card__title">Room Matching Tool</h3>
-              <p class="project-card__body">
-                Web-based helper that reconciles timetable rooms with estate
-                codes and survey locations.
-              </p>
-              <p class="project-card__meta">
-                Tools · Data cleaning · Matching logic
-              </p>
-            </article>
-
-            <article
-              class="project-card project-card--blue"
-              data-category="Web"
-            >
-              <div class="project-card__icon">💻</div>
-              <h3 class="project-card__title">Client Reporting Portal</h3>
-              <p class="project-card__body">
-                Lightweight portal that surfaces KPIs, exports and supporting
-                context for multiple university projects.
-              </p>
-              <p class="project-card__meta">
-                Web · Static site · Embedded Power BI
-              </p>
-            </article>
-
-            <article
-              class="project-card project-card--sand"
-              data-category="Analysis"
-            >
-              <div class="project-card__icon">🧮</div>
-              <h3 class="project-card__title">Forecasting &amp; Scenario Model</h3>
-              <p class="project-card__body">
-                Headcount and room demand model with adjustable assumptions for
-                teaching patterns and growth.
-              </p>
-              <p class="project-card__meta">
-                Analysis · Excel / Python · Scenario planning
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- About -->
-      <section id="about" class="about">
-        <div class="shell about__inner">
-          <div>
-            <h2 class="section-title">About</h2>
-            <p class="section-subtitle">
-              A quick snapshot of what I work on.
-            </p>
-          </div>
-          <div class="about__text">
-            <p>
-              I work in Business Intelligence with a focus on timetable and
-              space-usage data. Most of my work sits at the intersection of
-              dashboards, data modelling and small tools that make operations a
-              bit less painful.
-            </p>
-            <p>
-              My toolset usually includes Power BI, SQL and Python, plus a mix
-              of lightweight web technologies when a dedicated UI makes sense.
-            </p>
-          </div>
+      <!-- Apps Section -->
+      <section id="apps" class="section">
+        <div class="section-content">
+          <h2>Apps</h2>
+          <p>Stay tuned for upcoming tools and apps.</p>
         </div>
       </section>
     </main>
-
-    <footer class="site-footer">
-      <div class="shell site-footer__inner">
-        <span>© <span id="year"></span> Dan Stollenwerk</span>
-        <a href="mailto:you@example.com" class="footer-link">you@example.com</a>
-      </div>
-    </footer>
-
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
   </body>
 </html>
