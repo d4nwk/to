@@ -1,23 +1,43 @@
-// Simple navigation controller
+// Simple section switcher to mimic the Me / Portfolio / Apps behaviour
 document.addEventListener('DOMContentLoaded', () => {
-  const navItems = document.querySelectorAll('.nav-item');
-  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('[data-section-id]');
 
-  navItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      // Update active nav item
-      navItems.forEach((nav) => nav.classList.remove('active'));
-      item.classList.add('active');
-
-      // Show corresponding section
-      sections.forEach((section) => {
-        section.classList.remove('active');
-      });
-      const targetId = item.getAttribute('data-target');
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) {
-        targetSection.classList.add('active');
+  function setActive(sectionId) {
+    sections.forEach((section) => {
+      const isActive = section.dataset.sectionId === sectionId;
+      section.classList.toggle('hidden', !isActive);
+      // quick re-trigger of fade-in
+      if (isActive) {
+        section.classList.remove('animate-fade-in');
+        // force reflow
+        void section.offsetWidth;
+        section.classList.add('animate-fade-in');
       }
     });
+
+    navLinks.forEach((link) => {
+      const pill = link.querySelector('.nav-pill');
+      const label = link.querySelector('.nav-label');
+      const isActive = link.dataset.section === sectionId;
+
+      if (isActive) {
+        pill.classList.add('bg-primary', 'text-primary-content', 'px-4');
+        label.classList.add('font-semibold');
+      } else {
+        pill.classList.remove('bg-primary', 'text-primary-content', 'px-4');
+        label.classList.remove('font-semibold');
+      }
+    });
+  }
+
+  navLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const sectionId = link.dataset.section;
+      setActive(sectionId);
+    });
   });
+
+  // default to "me"
+  setActive('me');
 });
