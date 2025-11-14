@@ -121,6 +121,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const galleryContainer = document.getElementById("project-gallery");
   const projectCards = document.querySelectorAll("#project-list .card");
+  const projectListScrollContainer = document.getElementById("project-list");
+  const galleryScrollContainer = document.getElementById(
+    "project-gallery-scroll"
+  );
+
+  const scrollAreas = [
+    {
+      container: projectListScrollContainer,
+      topIndicator: document.getElementById("project-list-top-indicator"),
+      bottomIndicator: document.getElementById("project-list-bottom-indicator"),
+    },
+    {
+      container: galleryScrollContainer,
+      topIndicator: document.getElementById("gallery-top-indicator"),
+      bottomIndicator: document.getElementById("gallery-bottom-indicator"),
+    },
+  ];
+
+  function updateScrollIndicators(area) {
+    if (
+      !area ||
+      !area.container ||
+      !area.topIndicator ||
+      !area.bottomIndicator
+    ) {
+      return;
+    }
+
+    const el = area.container;
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    const hasOverflow = scrollHeight > clientHeight + 1;
+
+    if (!hasOverflow) {
+      area.topIndicator.style.opacity = "0";
+      area.bottomIndicator.style.opacity = "0";
+      return;
+    }
+
+    const atTop = scrollTop <= 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+    area.topIndicator.style.opacity = atTop ? "0" : "1";
+    area.bottomIndicator.style.opacity = atBottom ? "0" : "1";
+  }
+
+  function refreshAllScrollIndicators() {
+    scrollAreas.forEach((area) => updateScrollIndicators(area));
+  }
+
+  scrollAreas.forEach((area) => {
+    if (area.container) {
+      area.container.addEventListener("scroll", () => updateScrollIndicators(area));
+    }
+  });
 
   function renderGallery(projectId) {
     galleryContainer.innerHTML = "";
@@ -129,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!imgs || imgs.length === 0) {
       galleryContainer.innerHTML =
         '<p class="text-xs text-base-content/60">No screenshots yet for this project.</p>';
+      refreshAllScrollIndicators();
       return;
     }
 
@@ -151,6 +206,8 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.appendChild(caption);
       galleryContainer.appendChild(wrapper);
     });
+
+    refreshAllScrollIndicators();
   }
 
   function setActiveProject(projectId) {
@@ -180,6 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (firstCard) {
     setActiveProject(firstCard.dataset.projectId);
   }
+  refreshAllScrollIndicators();
 
   /* ---------- TAG FILTERING ---------- */
 
@@ -208,6 +266,8 @@ document.addEventListener("DOMContentLoaded", () => {
       galleryContainer.innerHTML =
         '<p class="text-xs text-base-content/60">No projects match this tag yet.</p>';
     }
+
+    refreshAllScrollIndicators();
   }
 
   tagButtons.forEach((btn) => {

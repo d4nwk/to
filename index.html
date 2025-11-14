@@ -18,24 +18,13 @@
 
     <style>
       :root {
-        --panel-r: 176;
-        --panel-g: 211;
-        --panel-b: 210;
+        /* unified panel colour */
+        --panel-main: #d8e9e9;
+        --panel-main-light: #e6f1f1;
 
-        /* unified colour for sidebar + active card */
-        --sidebar-bg: rgba(var(--panel-r), var(--panel-g), var(--panel-b), 0.5);
-        --project-card-active: rgba(
-          var(--panel-r),
-          var(--panel-g),
-          var(--panel-b),
-          0.5
-        );
-        --project-card-inactive: rgba(
-          var(--panel-r),
-          var(--panel-g),
-          var(--panel-b),
-          0.25
-        );
+        --sidebar-bg: var(--panel-main);
+        --project-card-active: var(--panel-main);
+        --project-card-inactive: var(--panel-main-light);
 
         --accent: #008080;
         --accent-hover: rgba(0, 128, 128, 0.25);
@@ -392,7 +381,7 @@
             class="m-auto w-full py-10 h-full sm:w-11/12 lg:w-10/12 xl:w-9/12 animate-fade-in"
           >
             <div class="mx-4 h-full flex flex-col">
-              <!-- Header (stays put while inner panes scroll) -->
+              <!-- Header -->
               <div class="flex-none">
                 <h1 class="font-bold text-3xl mb-1">Portfolio</h1>
                 <p class="text-xs text-base-content/70 mb-2">
@@ -404,7 +393,7 @@
               <div
                 class="flex-1 flex flex-col md:flex-row gap-6 mt-2 min-h-0"
               >
-                <!-- Left: projects list with fade -->
+                <!-- Left: projects list with indicators -->
                 <div class="relative md:w-5/12 h-full min-h-0">
                   <div
                     class="space-y-4 overflow-y-auto pr-1 scrollbar-hide h-full"
@@ -551,18 +540,24 @@
                     </div>
                   </div>
 
-                  <!-- bottom fade -->
+                  <!-- scroll indicators -->
                   <div
-                    class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white"
+                    id="project-list-top-indicator"
+                    class="pointer-events-none absolute left-2 right-2 top-2 h-[2px] bg-[var(--accent)] rounded-full opacity-0 transition-opacity duration-150"
+                  ></div>
+                  <div
+                    id="project-list-bottom-indicator"
+                    class="pointer-events-none absolute left-2 right-2 bottom-2 h-[2px] bg-[var(--accent)] rounded-full opacity-0 transition-opacity duration-150"
                   ></div>
                 </div>
 
-                <!-- Right: gallery with fade -->
+                <!-- Right: gallery with indicators -->
                 <div
                   class="relative md:flex-1 h-full min-h-0 mt-4 md:mt-0"
                 >
                   <div
                     class="overflow-y-auto pl-1 scrollbar-hide h-full"
+                    id="project-gallery-scroll"
                   >
                     <div
                       id="project-gallery"
@@ -572,9 +567,13 @@
                     </div>
                   </div>
 
-                  <!-- bottom fade -->
                   <div
-                    class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white"
+                    id="gallery-top-indicator"
+                    class="pointer-events-none absolute left-2 right-2 top-2 h-[2px] bg-[var(--accent)] rounded-full opacity-0 transition-opacity duration-150"
+                  ></div>
+                  <div
+                    id="gallery-bottom-indicator"
+                    class="pointer-events-none absolute left-2 right-2 bottom-2 h-[2px] bg-[var(--accent)] rounded-full opacity-0 transition-opacity duration-150"
                   ></div>
                 </div>
               </div>
