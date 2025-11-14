@@ -89,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const galleryContainer = document.getElementById("project-gallery");
-  const galleryCaption = document.getElementById("gallery-caption");
   const projectCards = document.querySelectorAll("#project-list .card");
 
   function renderGallery(projectId) {
@@ -104,30 +103,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     imgs.forEach((img) => {
       const wrapper = document.createElement("div");
-      wrapper.className =
-        "rounded-xl overflow-hidden bg-base-100 border border-base-300";
+      wrapper.className = "relative";
 
       const imageEl = document.createElement("img");
       imageEl.src = img.src;
       imageEl.alt = img.alt || "";
-      imageEl.className = "w-full h-auto block";
+      imageEl.className = "w-full h-auto block rounded-lg";
+
+      const caption = document.createElement("p");
+      caption.className = "absolute bottom-2 left-2 text-xs italic text-white bg-black/50 px-2 py-1 rounded";
+      caption.textContent = img.alt || "";
 
       wrapper.appendChild(imageEl);
+      wrapper.appendChild(caption);
       galleryContainer.appendChild(wrapper);
     });
   }
 
   function setActiveProject(projectId) {
-    // Remove active styling from all cards and set to 80% opacity
+    // Remove active styling from all cards and set opacity
     projectCards.forEach((card) => {
       const isActive = card.dataset.projectId === projectId;
       
       if (isActive) {
-        // Active card gets full opacity
-        card.style.backgroundColor = "var(--sidebar-bg-full)";
+        // Active card gets 50% opacity
+        card.style.backgroundColor = "var(--project-card-active)";
       } else {
-        // Inactive cards get 80% opacity
-        card.style.backgroundColor = "var(--sidebar-bg)";
+        // Inactive cards get 25% opacity
+        card.style.backgroundColor = "var(--project-card-inactive)";
       }
     });
 
@@ -175,10 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
       galleryContainer.innerHTML =
         '<p class="text-xs text-base-content/60">No projects match this tag yet.</p>';
     }
-
-    galleryCaption.textContent = activeTag
-      ? `Filtered by tag: ${activeTag}`
-      : "Hover over a project to see its screenshots.";
   }
 
   tagButtons.forEach((btn) => {

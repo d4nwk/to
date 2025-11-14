@@ -1,4 +1,46 @@
-<!DOCTYPE html>
+<!-- Apps section -->
+        <div
+          data-section-id="apps"
+          class="section hidden h-full overflow-y-auto scrollbar-hide"
+        >
+          <div
+            class="m-auto w-full py-10 h-auto sm:w-10/12 lg:w-8/12 xl:w-6/12 animate-fade-in"
+          >
+            <div class="mx-4">
+              <h1 class="font-bold text-3xl mb-1">Apps</h1>
+              <p class="text-xs text-base-content/70 mb-4">
+                A place for small tools and prototypes. Coming soon.
+              </p>
+              <div class="mockup-window border bg-base-200">
+                <div class="px-6 py-10 text-center text-xs text-base-content/70">
+                  No public apps yet. I'm currently focused on dashboards,
+                  pipelines and internal tooling.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>        <!-- Apps -->
+        <button
+          class="nav-link group my-4 flex w-24 select-none flex-col items-center justify-center"
+          data-section="apps"
+        >
+          <div class="nav-pill">
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 448 512"
+              height="18"
+              width="18"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M422.19 109.95L256.21 9.07c-19.91-12.1-44.52-12.1-64.43 0L25.81 109.95c-5.32 3.23-5.29 11.27.06 14.46L224 242.55l198.14-118.14c5.35-3.19 5.38-11.22.05-14.46zm13.84 44.63L240 271.46v223.82c0 12.88 13.39 20.91 24.05 14.43l152.16-92.48c19.68-11.96 31.79-33.94 31.79-57.7v-197.7c0-6.41-6.64-10.43-11.97-7.25zM0 161.83v197.7c0 23.77 12.11 45.74 31.79 57.7l152.16 92.47c10.67 6.48 24.05-1.54 24.05-14.43V271.46L11.97 154.58C6.64 151.4 0 155.42 0 161.83z"
+              ></path>
+            </svg>
+          </div>
+          <span class="nav-label truncate text-sm text-base-content">Apps</span>
+        </button><!DOCTYPE html>
 <html lang="en" data-theme="winter">
   <head>
     <meta charset="utf-8" />
@@ -19,8 +61,9 @@
 
     <style>
       :root {
-        --sidebar-bg: rgba(176, 211, 210, 0.8);
-        --sidebar-bg-full: #b0d3d2;
+        --sidebar-bg: #b0d3d2;
+        --project-card-active: rgba(176, 211, 210, 0.5);
+        --project-card-inactive: rgba(176, 211, 210, 0.25);
         --accent: #008080;
         --accent-hover: rgba(0, 128, 128, 0.25);
       }
@@ -209,8 +252,8 @@
           <div
             class="m-auto w-full py-10 h-auto sm:w-10/12 lg:w-8/12 xl:w-6/12 animate-fade-in"
           >
-            <div class="flex flex-col sm:flex-row mx-4 duration-200">
-              <div class="avatar">
+            <div class="flex flex-col sm:flex-row mx-4 duration-200 items-center sm:items-start">
+              <div class="avatar flex-shrink-0">
                 <div
                   class="h-28 w-28 sm:w-36 sm:h-36 duration-200 overflow-hidden rounded-lg bg-base-300 flex items-center justify-center text-xl"
                 >
@@ -223,7 +266,7 @@
               </div>
 
               <div
-                class="sm:ml-4 sm:mt-0 ml-0 mt-4 flex flex-col duration-300 space-y-1"
+                class="sm:ml-4 sm:mt-0 ml-0 mt-4 flex flex-col duration-300 space-y-1 flex-1"
               >
                 <h1 class="font-bold text-3xl">Dan Stollenwerk</h1>
                 <h2 class="text-lg">
@@ -313,7 +356,7 @@
 
             <!-- Experience -->
             <div class="flex flex-col mx-4 mt-6">
-              <div class="divider"></div>
+              <div class="divider my-4"></div>
               <div>
                 <p class="text-xl">Experience</p>
 
@@ -408,8 +451,8 @@
                 <div class="md:w-5/12 space-y-4" id="project-list">
                   <!-- Project 1 -->
                   <div
-                    class="card shadow-sm cursor-pointer"
-                    style="background-color: var(--sidebar-bg);"
+                    class="card shadow-sm cursor-pointer transition-all duration-200"
+                    style="background-color: var(--project-card-inactive);"
                     data-project-id="he-dashboards"
                     data-tags="powerbi,higher-ed,dashboards"
                   >
@@ -451,8 +494,8 @@
 
                   <!-- Project 2 -->
                   <div
-                    class="card shadow-sm cursor-pointer"
-                    style="background-color: var(--sidebar-bg);"
+                    class="card shadow-sm cursor-pointer transition-all duration-200"
+                    style="background-color: var(--project-card-inactive);"
                     data-project-id="utilisation-dashboard"
                     data-tags="powerbi,utilisation"
                   >
@@ -483,8 +526,8 @@
 
                   <!-- Project 3 -->
                   <div
-                    class="card shadow-sm cursor-pointer"
-                    style="background-color: var(--sidebar-bg);"
+                    class="card shadow-sm cursor-pointer transition-all duration-200"
+                    style="background-color: var(--project-card-inactive);"
                     data-project-id="survey-etl"
                     data-tags="python,etl,automation"
                   >
@@ -515,8 +558,8 @@
 
                   <!-- Project 4 -->
                   <div
-                    class="card shadow-sm cursor-pointer"
-                    style="background-color: var(--sidebar-bg);"
+                    class="card shadow-sm cursor-pointer transition-all duration-200"
+                    style="background-color: var(--project-card-inactive);"
                     data-project-id="room-matching"
                     data-tags="tools,data-quality"
                   >
@@ -545,16 +588,9 @@
 
                 <!-- Right: gallery for hovered/active project -->
                 <div class="md:flex-1">
-                  <p
-                    class="text-xs text-base-content/70 mb-2 md:mb-3"
-                    id="gallery-caption"
-                  >
-                    Hover over a project to see its screenshots.
-                  </p>
                   <div
                     id="project-gallery"
-                    class="h-[420px] md:h-[500px] rounded-xl overflow-y-auto scrollbar-hide p-4 flex flex-col gap-4"
-                    style="background-color: var(--sidebar-bg);"
+                    class="flex flex-col gap-4"
                   >
                     <!-- Images injected by script.js -->
                   </div>
