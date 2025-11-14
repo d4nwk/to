@@ -18,9 +18,25 @@
 
     <style>
       :root {
-        --project-card-active: rgba(176, 211, 210, 0.5);
-        --project-card-inactive: rgba(176, 211, 210, 0.25);
-        --sidebar-bg: var(--project-card-active);
+        --panel-r: 176;
+        --panel-g: 211;
+        --panel-b: 210;
+
+        /* unified colour for sidebar + active card */
+        --sidebar-bg: rgba(var(--panel-r), var(--panel-g), var(--panel-b), 0.5);
+        --project-card-active: rgba(
+          var(--panel-r),
+          var(--panel-g),
+          var(--panel-b),
+          0.5
+        );
+        --project-card-inactive: rgba(
+          var(--panel-r),
+          var(--panel-g),
+          var(--panel-b),
+          0.25
+        );
+
         --accent: #008080;
         --accent-hover: rgba(0, 128, 128, 0.25);
       }
@@ -179,7 +195,7 @@
 
       <!-- Main content panel -->
       <section
-        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:rounded-l-none sm:mt-2 sm:mb-2 sm:mr-2"
+        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:m-2 sm:ml-0"
       >
         <!-- Me section -->
         <div
@@ -192,7 +208,7 @@
             <div
               class="flex flex-col sm:flex-row mx-4 duration-200 items-center sm:items-start"
             >
-              <div class="avatar flex-shrink-0">
+              <div class="avatar flex-shrink-0 sm:mt-3">
                 <div
                   class="h-28 w-28 sm:w-36 sm:h-36 duration-200 overflow-hidden rounded-lg bg-base-300 flex items-center justify-center text-xl"
                 >
@@ -299,7 +315,7 @@
 
                 <!-- Escentral: BI Developer -->
                 <div class="flex mt-4 flex-col">
-                  <div class="flex">
+                  <div class="flex items-center">
                     <div
                       class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-md"
                     ></div>
@@ -308,8 +324,8 @@
                     </p>
                   </div>
 
-                  <div class="flex mb-2">
-                    <div class="w-2 mr-2 mt-2">
+                  <div class="flex mb-2 items-start">
+                    <div class="mr-2 mt-[3px]">
                       <div
                         class="w-2 h-2 bg-[var(--accent)] rounded-full"
                       ></div>
@@ -333,8 +349,8 @@
                     </div>
                   </div>
 
-                  <div class="flex mb-2">
-                    <div class="w-2 mr-2 mt-2">
+                  <div class="flex mb-2 items-start">
+                    <div class="mr-2 mt-[3px]">
                       <div
                         class="w-2 h-2 bg-[var(--accent)] rounded-full"
                       ></div>
@@ -376,7 +392,7 @@
             class="m-auto w-full py-10 h-full sm:w-11/12 lg:w-10/12 xl:w-9/12 animate-fade-in"
           >
             <div class="mx-4 h-full flex flex-col">
-              <!-- Sticky-style header (outside scroll areas) -->
+              <!-- Header (stays put while inner panes scroll) -->
               <div class="flex-none">
                 <h1 class="font-bold text-3xl mb-1">Portfolio</h1>
                 <p class="text-xs text-base-content/70 mb-2">
@@ -388,156 +404,178 @@
               <div
                 class="flex-1 flex flex-col md:flex-row gap-6 mt-2 min-h-0"
               >
-                <!-- Left: single-column list of projects -->
-                <div
-                  class="md:w-5/12 space-y-4 overflow-y-auto pr-1 scrollbar-hide"
-                  id="project-list"
-                >
-                  <!-- Project 1 -->
+                <!-- Left: projects list with fade -->
+                <div class="relative md:w-5/12 h-full min-h-0">
                   <div
-                    class="card shadow-sm cursor-pointer transition-all duration-200"
-                    style="background-color: var(--project-card-inactive);"
-                    data-project-id="he-dashboards"
-                    data-tags="powerbi,higher-ed,dashboards"
+                    class="space-y-4 overflow-y-auto pr-1 scrollbar-hide h-full"
+                    id="project-list"
                   >
-                    <div class="card-body flex flex-col h-full">
-                      <h2 class="card-title text-sm">
-                        Power BI dashboards for HE institutions
-                      </h2>
-                      <p class="text-xs">
-                        Collection of interactive Power&nbsp;BI dashboards
-                        designed for more than 30 UK higher education
-                        institutions. Combines functional suitability survey
-                        results, room utilisation and student/staff experience
-                        into a reusable reporting suite.
-                      </p>
-                      <div
-                        class="mt-auto flex items-end justify-between gap-2 pt-3"
-                      >
-                        <div class="flex flex-wrap gap-1">
-                          <button class="tag-badge" data-tag="powerbi">
-                            Power BI
-                          </button>
-                          <button class="tag-badge" data-tag="higher-ed">
-                            Higher Education
-                          </button>
-                          <button class="tag-badge" data-tag="dashboards">
-                            Dashboards
-                          </button>
-                        </div>
-                        <a
-                          href="https://dev.to/4d/pbi-he-heo"
-                          target="_blank"
-                          rel="noopener"
-                          class="link text-[11px] whitespace-nowrap"
-                          >Read article</a
+                    <!-- Project 1 -->
+                    <div
+                      class="card shadow-sm cursor-pointer transition-all duration-200"
+                      style="background-color: var(--project-card-inactive);"
+                      data-project-id="he-dashboards"
+                      data-tags="powerbi,higher-ed,dashboards"
+                    >
+                      <div class="card-body flex flex-col h-full">
+                        <h2 class="card-title text-sm">
+                          Power BI dashboards for HE institutions
+                        </h2>
+                        <p class="text-xs">
+                          Collection of interactive Power&nbsp;BI dashboards
+                          designed for more than 30 UK higher education
+                          institutions. Combines functional suitability survey
+                          results, room utilisation and student/staff experience
+                          into a reusable reporting suite.
+                        </p>
+                        <div
+                          class="mt-auto flex items-end justify-between gap-2 pt-3"
                         >
+                          <div class="flex flex-wrap gap-1">
+                            <button class="tag-badge" data-tag="powerbi">
+                              Power BI
+                            </button>
+                            <button class="tag-badge" data-tag="higher-ed">
+                              Higher Education
+                            </button>
+                            <button class="tag-badge" data-tag="dashboards">
+                              Dashboards
+                            </button>
+                          </div>
+                          <a
+                            href="https://dev.to/4d/pbi-he-heo"
+                            target="_blank"
+                            rel="noopener"
+                            class="link text-[11px] whitespace-nowrap"
+                            >Read article</a
+                          >
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- Project 2 -->
-                  <div
-                    class="card shadow-sm cursor-pointer transition-all duration-200"
-                    style="background-color: var(--project-card-inactive);"
-                    data-project-id="utilisation-dashboard"
-                    data-tags="powerbi,utilisation"
-                  >
-                    <div class="card-body flex flex-col h-full">
-                      <h2 class="card-title text-sm">
-                        Timetable utilisation dashboard
-                      </h2>
-                      <p class="text-xs">
-                        Power&nbsp;BI report exploring room occupancy, booking
-                        behaviour and timetable efficiency for a university
-                        client. Focused on revealing patterns of under-use and
-                        over-booking across the teaching estate.
-                      </p>
-                      <div
-                        class="mt-auto flex items-end justify-between gap-2 pt-3"
-                      >
-                        <div class="flex flex-wrap gap-1">
-                          <button class="tag-badge" data-tag="powerbi">
-                            Power BI
-                          </button>
-                          <button class="tag-badge" data-tag="utilisation">
-                            Utilisation
-                          </button>
+                    <!-- Project 2 -->
+                    <div
+                      class="card shadow-sm cursor-pointer transition-all duration-200"
+                      style="background-color: var(--project-card-inactive);"
+                      data-project-id="utilisation-dashboard"
+                      data-tags="powerbi,utilisation"
+                    >
+                      <div class="card-body flex flex-col h-full">
+                        <h2 class="card-title text-sm">
+                          Timetable utilisation dashboard
+                        </h2>
+                        <p class="text-xs">
+                          Power&nbsp;BI report exploring room occupancy, booking
+                          behaviour and timetable efficiency for a university
+                          client. Focused on revealing patterns of under-use and
+                          over-booking across the teaching estate.
+                        </p>
+                        <div
+                          class="mt-auto flex items-end justify-between gap-2 pt-3"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <button class="tag-badge" data-tag="powerbi">
+                              Power BI
+                            </button>
+                            <button class="tag-badge" data-tag="utilisation">
+                              Utilisation
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div
+                      class="card shadow-sm cursor-pointer transition-all duration-200"
+                      style="background-color: var(--project-card-inactive);"
+                      data-project-id="survey-etl"
+                      data-tags="python,etl,automation"
+                    >
+                      <div class="card-body flex flex-col h-full">
+                        <h2 class="card-title text-sm">Survey ETL pipeline</h2>
+                        <p class="text-xs">
+                          Automated Python pipeline to ingest, clean and reshape
+                          space-usage survey data into an analysis-ready model.
+                          Used as a base for multiple reporting projects.
+                        </p>
+                        <div
+                          class="mt-auto flex items-end justify-between gap-2 pt-3"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <button class="tag-badge" data-tag="python">
+                              Python
+                            </button>
+                            <button class="tag-badge" data-tag="etl">
+                              ETL
+                            </button>
+                            <button class="tag-badge" data-tag="automation">
+                              Automation
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div
+                      class="card shadow-sm cursor-pointer transition-all duration-200"
+                      style="background-color: var(--project-card-inactive);"
+                      data-project-id="room-matching"
+                      data-tags="tools,data-quality"
+                    >
+                      <div class="card-body flex flex-col h-full">
+                        <h2 class="card-title text-sm">Room matching tool</h2>
+                        <p class="text-xs">
+                          Lightweight tool to reconcile room names across
+                          timetable, estates and survey systems, making it
+                          easier to connect datasets and build consistent
+                          reports.
+                        </p>
+                        <div
+                          class="mt-auto flex items-end justify-between gap-2 pt-3"
+                        >
+                          <div class="flex flex-wrap gap-1">
+                            <button class="tag-badge" data-tag="tools">
+                              Tools
+                            </button>
+                            <button
+                              class="tag-badge"
+                              data-tag="data-quality"
+                            >
+                              Data quality
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Project 3 -->
+                  <!-- bottom fade -->
                   <div
-                    class="card shadow-sm cursor-pointer transition-all duration-200"
-                    style="background-color: var(--project-card-inactive);"
-                    data-project-id="survey-etl"
-                    data-tags="python,etl,automation"
-                  >
-                    <div class="card-body flex flex-col h-full">
-                      <h2 class="card-title text-sm">Survey ETL pipeline</h2>
-                      <p class="text-xs">
-                        Automated Python pipeline to ingest, clean and reshape
-                        space-usage survey data into an analysis-ready model.
-                        Used as a base for multiple reporting projects.
-                      </p>
-                      <div
-                        class="mt-auto flex items-end justify-between gap-2 pt-3"
-                      >
-                        <div class="flex flex-wrap gap-1">
-                          <button class="tag-badge" data-tag="python">
-                            Python
-                          </button>
-                          <button class="tag-badge" data-tag="etl">
-                            ETL
-                          </button>
-                          <button class="tag-badge" data-tag="automation">
-                            Automation
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Project 4 -->
-                  <div
-                    class="card shadow-sm cursor-pointer transition-all duration-200"
-                    style="background-color: var(--project-card-inactive);"
-                    data-project-id="room-matching"
-                    data-tags="tools,data-quality"
-                  >
-                    <div class="card-body flex flex-col h-full">
-                      <h2 class="card-title text-sm">Room matching tool</h2>
-                      <p class="text-xs">
-                        Lightweight tool to reconcile room names across
-                        timetable, estates and survey systems, making it easier
-                        to connect datasets and build consistent reports.
-                      </p>
-                      <div
-                        class="mt-auto flex items-end justify-between gap-2 pt-3"
-                      >
-                        <div class="flex flex-wrap gap-1">
-                          <button class="tag-badge" data-tag="tools">
-                            Tools
-                          </button>
-                          <button class="tag-badge" data-tag="data-quality">
-                            Data quality
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white"
+                  ></div>
                 </div>
 
-                <!-- Right: gallery for hovered/active project -->
-                <div class="md:flex-1 overflow-y-auto pl-1 scrollbar-hide">
+                <!-- Right: gallery with fade -->
+                <div
+                  class="relative md:flex-1 h-full min-h-0 mt-4 md:mt-0"
+                >
                   <div
-                    id="project-gallery"
-                    class="flex flex-col gap-4 pb-4"
+                    class="overflow-y-auto pl-1 scrollbar-hide h-full"
                   >
-                    <!-- Images injected by script.js -->
+                    <div
+                      id="project-gallery"
+                      class="flex flex-col gap-4 pb-4"
+                    >
+                      <!-- Images injected by script.js -->
+                    </div>
                   </div>
+
+                  <!-- bottom fade -->
+                  <div
+                    class="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white"
+                  ></div>
                 </div>
               </div>
             </div>

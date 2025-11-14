@@ -219,15 +219,4 @@ document.addEventListener("DOMContentLoaded", () => {
       if (activeTag === tag) {
         activeTag = null;
       } else {
-        activeTag = tag;
-      }
-
-      // Update visual state on all tag buttons
-      tagButtons.forEach((b) => {
-        b.classList.toggle("active-tag", b.dataset.tag === activeTag);
-      });
-
-      applyTagFilter();
-    });
-  });
-});
+        activeTag =
