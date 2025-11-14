@@ -9,7 +9,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Tailwind + DaisyUI (no build step needed) -->
+    <!-- Tailwind + DaisyUI -->
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
       rel="stylesheet"
@@ -18,11 +18,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-      body {
-        margin: 0;
+      :root {
+        --sidebar-bg: #b0d3d2;
+        --accent: #008080;
+        --accent-hover: rgba(0, 128, 128, 0.5);
       }
 
-      /* smooth fade-in similar to the example site */
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
       @keyframes fade-in {
         from {
           opacity: 0;
@@ -37,7 +44,6 @@
         animation: fade-in 0.25s ease-out;
       }
 
-      /* hide scrollbars for the inner content area */
       .scrollbar-hide::-webkit-scrollbar {
         display: none;
       }
@@ -45,22 +51,76 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+
+      /* Sidebar styling */
+      nav.sidebar {
+        background-color: var(--sidebar-bg);
+      }
+
+      .nav-pill {
+        border-radius: 9999px;
+        padding: 0.45rem 0.65rem;
+        transition: background-color 0.18s ease, padding 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .nav-pill.active-pill {
+        background-color: var(--accent);
+        color: #ffffff;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .nav-link:hover .nav-pill:not(.active-pill) {
+        background-color: var(--accent-hover);
+        transform: scale(1.03);
+      }
+
+      .nav-label {
+        transition: font-weight 0.15s ease, color 0.15s ease;
+      }
+
+      .nav-label.active-label {
+        font-weight: 600;
+      }
+
+      /* Tag bubbles */
+      .tag-badge {
+        font-size: 0.7rem;
+        border-radius: 9999px;
+        padding: 0.15rem 0.6rem;
+        border: 1px solid rgba(0, 128, 128, 0.35);
+        color: var(--accent);
+        background-color: transparent;
+        transition: background-color 0.15s ease, color 0.15s ease,
+          border-color 0.15s ease, transform 0.1s ease;
+        cursor: pointer;
+      }
+
+      .tag-badge:hover {
+        transform: translateY(-1px);
+        border-color: rgba(0, 128, 128, 0.8);
+      }
+
+      .tag-badge.active-tag {
+        background-color: var(--accent);
+        border-color: var(--accent);
+        color: #ffffff;
+      }
     </style>
   </head>
   <body class="bg-base-300">
     <main class="flex h-screen w-screen bg-base-300 flex-col-reverse sm:flex-row">
       <!-- Sidebar nav -->
       <nav
-        class="h-20 w-screen flex flex-row items-center justify-center sm:h-screen sm:w-24 sm:flex-col sm:relative duration-300"
+        class="sidebar h-20 w-screen flex flex-row items-center justify-center sm:h-screen sm:w-24 sm:flex-col sm:relative duration-300"
       >
         <!-- Me -->
         <button
           class="nav-link group my-4 flex w-24 select-none flex-col items-center justify-center"
           data-section="me"
         >
-          <div
-            class="nav-pill py-2 rounded-full bg-primary px-4 text-primary-content transition-all duration-500"
-          >
+          <div class="nav-pill">
             <!-- user icon -->
             <svg
               stroke="currentColor"
@@ -76,7 +136,7 @@
               ></path>
             </svg>
           </div>
-          <span class="nav-label truncate text-sm text-base-content font-semibold">Me</span>
+          <span class="nav-label truncate text-sm text-base-content">Me</span>
         </button>
 
         <!-- Portfolio -->
@@ -84,9 +144,7 @@
           class="nav-link group my-4 flex w-24 select-none flex-col items-center justify-center"
           data-section="portfolio"
         >
-          <div
-            class="nav-pill py-2 rounded-full text-base-content transition-all duration-500 group-hover:bg-primary group-hover:text-primary-content group-hover:px-4"
-          >
+          <div class="nav-pill">
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -101,7 +159,9 @@
               ></path>
             </svg>
           </div>
-          <span class="nav-label truncate text-sm text-base-content">Portfolio</span>
+          <span class="nav-label truncate text-sm text-base-content"
+            >Portfolio</span
+          >
         </button>
 
         <!-- Apps -->
@@ -109,9 +169,7 @@
           class="nav-link group my-4 flex w-24 select-none flex-col items-center justify-center"
           data-section="apps"
         >
-          <div
-            class="nav-pill py-2 rounded-full text-base-content transition-all duration-500 group-hover:bg-primary group-hover:text-primary-content group-hover:px-4"
-          >
+          <div class="nav-pill">
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -147,7 +205,7 @@
                 <div
                   class="h-28 w-28 sm:w-36 sm:h-36 duration-200 overflow-hidden rounded-lg bg-base-300 flex items-center justify-center text-xl"
                 >
-                  <!-- You can replace this with an actual <img> later -->
+                  <!-- Replace DS with a real image later if you want -->
                   <span class="font-semibold">DS</span>
                 </div>
               </div>
@@ -156,7 +214,7 @@
                 class="sm:ml-4 sm:mt-0 ml-0 mt-4 flex flex-col duration-300 space-y-1"
               >
                 <h1 class="font-bold text-3xl">Dan Stollenwerk</h1>
-                <h2 class="text-lg font-mono">
+                <h2 class="text-lg">
                   Business Intelligence Developer
                 </h2>
                 <p class="text-xs">
@@ -165,24 +223,97 @@
                   organisations.
                 </p>
                 <p class="text-xs">
-                  I enjoy turning messy operational data into clear, honest
-                  stories that people can actually use.
+                  Based in Seoul, helping higher education clients make sense of
+                  messy timetable, survey and estate data.
                 </p>
+
+                <!-- Socials -->
+                <div class="flex flex-row flex-wrap mt-2">
+                  <!-- LinkedIn -->
+                  <a
+                    href="https://www.linkedin.com/in/danstollenwerk/"
+                    aria-label="LinkedIn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rounded-full flex flex-row w-auto bg-[var(--accent)] text-white p-2 mr-2 mt-2 items-center hover:bg-[var(--accent-hover)] transition-all ease-in-out duration-200 hover:scale-110"
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 448 512"
+                      height="16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"
+                      ></path>
+                    </svg>
+                  </a>
+
+                  <!-- GitHub -->
+                  <a
+                    href="https://github.com/d4nwk"
+                    aria-label="GitHub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rounded-full flex flex-row w-auto bg-[var(--accent)] text-white p-2 mr-2 mt-2 items-center hover:bg-[var(--accent-hover)] transition-all ease-in-out duration-200 hover:scale-110"
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 496 512"
+                      height="16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"
+                      ></path>
+                    </svg>
+                  </a>
+
+                  <!-- Email -->
+                  <a
+                    href="mailto:danwk@naver.com"
+                    aria-label="Email"
+                    class="rounded-full flex flex-row w-auto bg-[var(--accent)] text-white p-2 mr-2 mt-2 items-center hover:bg-[var(--accent-hover)] transition-all ease-in-out duration-200 hover:scale-110"
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 512 512"
+                      height="16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"
+                      ></path>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
 
+            <!-- Experience -->
             <div class="flex flex-col mx-4 mt-6">
               <div class="divider"></div>
               <div>
                 <p class="text-xl">Experience</p>
 
+                <!-- Escentral: BI Developer -->
                 <div class="flex mt-4 flex-col">
                   <div class="flex">
-                    <div class="h-5 w-2 bg-primary mr-2 rounded-sm"></div>
+                    <div class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-sm"></div>
                     <p class="antialiased text-base font-extrabold">
                       Escentral
                     </p>
                   </div>
+
                   <div class="flex mb-2">
                     <div class="w-2 mr-2 mt-2">
                       <div
@@ -196,19 +327,50 @@
                       <p
                         class="antialiased italic text-xs font-light"
                       >
-                        2025 – Present
+                        May 2025 – present · Full-time
                       </p>
                       <p class="antialiased text-xs font-medium">
-                        Higher education analytics, dashboards & ETL.
+                        Built Python-based Streamlit applications for client and
+                        internal use (data collection portals, scenario tools,
+                        batch analysis runners). Developed dashboards mapping
+                        timetable data onto campus digital twins and animating
+                        student travel distance using Google Maps API.
+                        Contributed to a subscription model that increased
+                        annual data platform revenue by ~30%.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex mb-2">
+                    <div class="w-2 mr-2 mt-2">
+                      <div
+                        class="w-2 h-2 bg-secondary rounded-full"
+                      ></div>
+                    </div>
+                    <div>
+                      <p class="antialiased text-sm font-semibold">
+                        Graduate Data Analyst
+                      </p>
+                      <p
+                        class="antialiased italic text-xs font-light"
+                      >
+                        Apr 2024 – May 2025 · Full-time
+                      </p>
+                      <p class="antialiased text-xs font-medium">
+                        Produced 50+ Power&nbsp;BI reports for 30+ institutions’
+                        space-management practice, presenting estate
+                        optimisation roadmaps that saved universities up to
+                        £2&nbsp;M per year on average. Designed an HTML web app
+                        for hosting reports via REST API, expanding access to
+                        unlicensed clients and generating 50% more data projects
+                        per year.
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <p class="text-xs text-base-content/70 mt-2 max-w-xl">
-                  I mainly work with Power&nbsp;BI, Tableau and Python to build
-                  dashboards and pipelines for university timetabling, room
-                  usage and survey data.
+                  Higher education analytics, dashboards &amp; ETL.
                 </p>
               </div>
             </div>
@@ -221,7 +383,7 @@
           class="section hidden h-full overflow-y-auto scrollbar-hide"
         >
           <div
-            class="m-auto w-full py-10 h-auto sm:w-10/12 lg:w-8/12 xl:w-8/12 animate-fade-in"
+            class="m-auto w-full py-10 h-auto sm:w-11/12 lg:w-10/12 xl:w-9/12 animate-fade-in"
           >
             <div class="mx-4">
               <h1 class="font-bold text-3xl mb-1">Portfolio</h1>
@@ -229,97 +391,155 @@
                 A selection of dashboards, ETL pipelines and tools.
               </p>
 
-              <div class="grid gap-4 md:grid-cols-2">
-                <!-- Power BI dev.to entry -->
-                <div class="card bg-base-200 shadow-sm">
-                  <div class="card-body">
-                    <h2 class="card-title text-sm">
-                      Power BI dashboards for HE institutions
-                    </h2>
-                    <p class="text-xs">
-                      Collection of interactive Power&nbsp;BI dashboards
-                      designed for more than 30 UK higher education
-                      institutions. Combines functional suitability survey
-                      results, room utilisation and student/staff experience
-                      into a reusable reporting suite.
-                    </p>
-                    <div
-                      class="card-actions justify-between items-center mt-3"
-                    >
-                      <div class="flex flex-wrap gap-1 text-[10px]">
-                        <span class="badge badge-ghost">Power BI</span>
-                        <span class="badge badge-ghost">Higher Education</span>
-                        <span class="badge badge-ghost">Dashboards</span>
-                      </div>
-                      <a
-                        href="https://dev.to/4d/pbi-he-heo"
-                        target="_blank"
-                        rel="noopener"
-                        class="link text-xs"
-                        >Read article</a
+              <div class="flex flex-col md:flex-row gap-6">
+                <!-- Left: single-column list of projects -->
+                <div class="md:w-5/12 space-y-4" id="project-list">
+                  <!-- Project 1 -->
+                  <div
+                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    data-project-id="he-dashboards"
+                    data-tags="powerbi,higher-ed,dashboards"
+                  >
+                    <div class="card-body flex flex-col h-full">
+                      <h2 class="card-title text-sm">
+                        Power BI dashboards for HE institutions
+                      </h2>
+                      <p class="text-xs">
+                        Collection of interactive Power&nbsp;BI dashboards
+                        designed for more than 30 UK higher education
+                        institutions. Combines functional suitability survey
+                        results, room utilisation and student/staff experience
+                        into a reusable reporting suite.
+                      </p>
+                      <div
+                        class="mt-auto flex items-end justify-between gap-2 pt-3"
                       >
+                        <div class="flex flex-wrap gap-1">
+                          <button class="tag-badge" data-tag="powerbi">
+                            Power BI
+                          </button>
+                          <button class="tag-badge" data-tag="higher-ed">
+                            Higher Education
+                          </button>
+                          <button class="tag-badge" data-tag="dashboards">
+                            Dashboards
+                          </button>
+                        </div>
+                        <a
+                          href="https://dev.to/4d/pbi-he-heo"
+                          target="_blank"
+                          rel="noopener"
+                          class="link text-[11px] whitespace-nowrap"
+                          >Read article</a
+                        >
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <!-- Placeholder 1 -->
-                <div class="card bg-base-200 shadow-sm">
-                  <div class="card-body">
-                    <h2 class="card-title text-sm">
-                      Timetable utilisation dashboard
-                    </h2>
-                    <p class="text-xs">
-                      Power&nbsp;BI report exploring room occupancy, booking
-                      behaviour and timetable efficiency for a university
-                      client. Placeholder – details and screenshots to come.
-                    </p>
-                    <div class="card-actions mt-3">
-                      <div class="flex flex-wrap gap-1 text-[10px]">
-                        <span class="badge badge-ghost">Power BI</span>
-                        <span class="badge badge-ghost">Utilisation</span>
+                  <!-- Project 2 -->
+                  <div
+                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    data-project-id="utilisation-dashboard"
+                    data-tags="powerbi,utilisation"
+                  >
+                    <div class="card-body flex flex-col h-full">
+                      <h2 class="card-title text-sm">
+                        Timetable utilisation dashboard
+                      </h2>
+                      <p class="text-xs">
+                        Power&nbsp;BI report exploring room occupancy, booking
+                        behaviour and timetable efficiency for a university
+                        client. Focused on revealing patterns of under-use and
+                        over-booking across the teaching estate.
+                      </p>
+                      <div
+                        class="mt-auto flex items-end justify-between gap-2 pt-3"
+                      >
+                        <div class="flex flex-wrap gap-1">
+                          <button class="tag-badge" data-tag="powerbi">
+                            Power BI
+                          </button>
+                          <button class="tag-badge" data-tag="utilisation">
+                            Utilisation
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Project 3 -->
+                  <div
+                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    data-project-id="survey-etl"
+                    data-tags="python,etl,automation"
+                  >
+                    <div class="card-body flex flex-col h-full">
+                      <h2 class="card-title text-sm">Survey ETL pipeline</h2>
+                      <p class="text-xs">
+                        Automated Python pipeline to ingest, clean and reshape
+                        space-usage survey data into an analysis-ready model.
+                        Used as a base for multiple reporting projects.
+                      </p>
+                      <div
+                        class="mt-auto flex items-end justify-between gap-2 pt-3"
+                      >
+                        <div class="flex flex-wrap gap-1">
+                          <button class="tag-badge" data-tag="python">
+                            Python
+                          </button>
+                          <button class="tag-badge" data-tag="etl">
+                            ETL
+                          </button>
+                          <button class="tag-badge" data-tag="automation">
+                            Automation
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Project 4 -->
+                  <div
+                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    data-project-id="room-matching"
+                    data-tags="tools,data-quality"
+                  >
+                    <div class="card-body flex flex-col h-full">
+                      <h2 class="card-title text-sm">Room matching tool</h2>
+                      <p class="text-xs">
+                        Lightweight tool to reconcile room names across
+                        timetable, estates and survey systems, making it easier
+                        to connect datasets and build consistent reports.
+                      </p>
+                      <div
+                        class="mt-auto flex items-end justify-between gap-2 pt-3"
+                      >
+                        <div class="flex flex-wrap gap-1">
+                          <button class="tag-badge" data-tag="tools">
+                            Tools
+                          </button>
+                          <button class="tag-badge" data-tag="data-quality">
+                            Data quality
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Placeholder 2 -->
-                <div class="card bg-base-200 shadow-sm">
-                  <div class="card-body">
-                    <h2 class="card-title text-sm">
-                      Survey ETL pipeline
-                    </h2>
-                    <p class="text-xs">
-                      Automated Python-based pipeline to ingest, clean and
-                      reshape space-usage survey data into an analysis-ready
-                      model. Used as a base for multiple reporting projects.
-                    </p>
-                    <div class="card-actions mt-3">
-                      <div class="flex flex-wrap gap-1 text-[10px]">
-                        <span class="badge badge-ghost">Python</span>
-                        <span class="badge badge-ghost">ETL</span>
-                        <span class="badge badge-ghost">Automation</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Placeholder 3 -->
-                <div class="card bg-base-200 shadow-sm">
-                  <div class="card-body">
-                    <h2 class="card-title text-sm">
-                      Room matching tool
-                    </h2>
-                    <p class="text-xs">
-                      Lightweight tool to reconcile room names across timetable,
-                      estates and survey systems, making it easier to connect
-                      datasets and build consistent reports.
-                    </p>
-                    <div class="card-actions mt-3">
-                      <div class="flex flex-wrap gap-1 text-[10px]">
-                        <span class="badge badge-ghost">Tools</span>
-                        <span class="badge badge-ghost">Data quality</span>
-                      </div>
-                    </div>
+                <!-- Right: gallery for hovered/active project -->
+                <div class="md:flex-1">
+                  <p
+                    class="text-xs text-base-content/70 mb-2 md:mb-3"
+                    id="gallery-caption"
+                  >
+                    Hover over a project to see its screenshots.
+                  </p>
+                  <div
+                    id="project-gallery"
+                    class="h-[420px] md:h-[500px] bg-base-200 rounded-xl overflow-y-auto scrollbar-hide p-4 flex flex-col gap-4"
+                  >
+                    <!-- Images injected by script.js -->
                   </div>
                 </div>
               </div>
