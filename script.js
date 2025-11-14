@@ -118,11 +118,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setActiveProject(projectId) {
+    // Remove active styling from all cards and set to 80% opacity
     projectCards.forEach((card) => {
       const isActive = card.dataset.projectId === projectId;
-      card.classList.toggle("ring-2", isActive);
-      card.classList.toggle("ring-[var(--accent)]", isActive);
-      card.classList.toggle("ring-offset-2", isActive);
+      
+      if (isActive) {
+        // Active card gets full opacity
+        card.style.backgroundColor = "var(--sidebar-bg-full)";
+      } else {
+        // Inactive cards get 80% opacity
+        card.style.backgroundColor = "var(--sidebar-bg)";
+      }
     });
 
     renderGallery(projectId);

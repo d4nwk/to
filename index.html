@@ -19,15 +19,17 @@
 
     <style>
       :root {
-        --sidebar-bg: #b0d3d2;
+        --sidebar-bg: rgba(176, 211, 210, 0.8);
+        --sidebar-bg-full: #b0d3d2;
         --accent: #008080;
-        --accent-hover: rgba(0, 128, 128, 0.5);
+        --accent-hover: rgba(0, 128, 128, 0.25);
       }
 
       body {
         margin: 0;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
+        background-color: var(--sidebar-bg);
       }
 
       @keyframes fade-in {
@@ -109,8 +111,8 @@
       }
     </style>
   </head>
-  <body class="bg-base-300">
-    <main class="flex h-screen w-screen bg-base-300 flex-col-reverse sm:flex-row">
+  <body style="background-color: var(--sidebar-bg);">
+    <main class="flex h-screen w-screen flex-col-reverse sm:flex-row" style="background-color: var(--sidebar-bg);">
       <!-- Sidebar nav -->
       <nav
         class="sidebar h-20 w-screen flex flex-row items-center justify-center sm:h-screen sm:w-24 sm:flex-col sm:relative duration-300"
@@ -121,19 +123,22 @@
           data-section="me"
         >
           <div class="nav-pill">
-            <!-- user icon -->
+            <!-- smile icon from lucide -->
             <svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 496 512"
-              height="18"
-              width="18"
               xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
-              <path
-                d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm141.4 389.4c-37.8 37.8-88 58.6-141.4 58.6s-103.6-20.8-141.4-58.6C68.8 359.6 48 309.4 48 256s20.8-103.6 58.6-141.4C144.4 76.8 194.6 56 248 56s103.6 20.8 141.4 58.6c37.8 37.8 58.6 88 58.6 141.4s-20.8 103.6-58.6 141.4zM328 164c-25.7 0-55.9 16.9-59.9 42.1-1.7 11.2 11.5 18.2 19.8 10.8l9.5-8.5c14.8-13.2 46.2-13.2 61 0l9.5 8.5c8.5 7.4 21.6.3 19.8-10.8-3.8-25.2-34-42.1-59.7-42.1zm-160 60c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm194.4 64H133.6c-8.2 0-14.5 7-13.5 15 7.5 59.2 58.9 105 121.1 105h13.6c62.2 0 113.6-45.8 121.1-105 1-8-5.3-15-13.5-15z"
-              ></path>
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+              <line x1="9" x2="9.01" y1="9" y2="9"/>
+              <line x1="15" x2="15.01" y1="9" y2="9"/>
             </svg>
           </div>
           <span class="nav-label truncate text-sm text-base-content">Me</span>
@@ -145,18 +150,22 @@
           data-section="portfolio"
         >
           <div class="nav-pill">
+            <!-- layout-panel-left flipped horizontally -->
             <svg
-              stroke="currentColor"
-              fill="currentColor"
-              stroke-width="0"
-              viewBox="0 0 512 512"
-              height="18"
-              width="18"
               xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="transform: scaleX(-1);"
             >
-              <path
-                d="M500 128c6.627 0 12-5.373 12-12V44c0-6.627-5.373-12-12-12h-72c-6.627 0-12 5.373-12 12v12H96V44c0-6.627-5.373-12-12-12H12C5.373 32 0 37.373 0 44v72c0 6.627 5.373 12 12 12h12v256H12c-6.627 0-12 5.373-12 12v72c0 6.627 5.373 12 12 12h72c6.627 0 12-5.373 12-12v-12h320v12c0 6.627 5.373 12 12 12h72c6.627 0 12-5.373 12-12v-72c0-6.627-5.373-12-12-12h-12V128h12zm-52-64h32v32h-32V64zM32 64h32v32H32V64zm32 384H32v-32h32v32zm416 0h-32v-32h32v32zm-40-64h-12c-6.627 0-12 5.373-12 12v12H96v-12c0-6.627-5.373-12-12-12H72V128h12c6.627 0 12-5.373 12-12v-12h320v12c0 6.627 5.373 12 12 12h12v256zm-36-192h-84v-52c0-6.628-5.373-12-12-12H108c-6.627 0-12 5.372-12 12v168c0 6.628 5.373 12 12 12h84v52c0 6.628 5.373 12 12 12h200c6.627 0 12-5.372 12-12V204c0-6.628-5.373-12-12-12zm-268-24h144v112H136V168zm240 176H232v-24h76c6.627 0 12-5.372 12-12v-76h56v112z"
-              ></path>
+              <rect width="7" height="18" x="3" y="3" rx="1"/>
+              <rect width="7" height="7" x="14" y="3" rx="1"/>
+              <rect width="7" height="7" x="14" y="14" rx="1"/>
             </svg>
           </div>
           <span class="nav-label truncate text-sm text-base-content"
@@ -190,7 +199,7 @@
 
       <!-- Main content panel -->
       <section
-        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:my-2 sm:mr-2"
+        class="flex-1 w-full bg-base-100 overflow-hidden sm:rounded-3xl sm:m-2"
       >
         <!-- Me section -->
         <div
@@ -205,8 +214,11 @@
                 <div
                   class="h-28 w-28 sm:w-36 sm:h-36 duration-200 overflow-hidden rounded-lg bg-base-300 flex items-center justify-center text-xl"
                 >
-                  <!-- Replace DS with a real image later if you want -->
-                  <span class="font-semibold">DS</span>
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D4D03AQEPjwu33HauEg/profile-displayphoto-scale_400_400/B4DZfuKQ..GkAk-/0/1752047361275?e=1764806400&v=beta&t=Lz8k5jrwF-wpGrX4N27wPQddkdGnUOsJEdTDyGvefuk"
+                    alt="Dan Stollenwerk"
+                    class="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
@@ -308,7 +320,7 @@
                 <!-- Escentral: BI Developer -->
                 <div class="flex mt-4 flex-col">
                   <div class="flex">
-                    <div class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-sm"></div>
+                    <div class="h-5 w-2 bg-[var(--accent)] mr-2 rounded-md"></div>
                     <p class="antialiased text-base font-extrabold">
                       Escentral
                     </p>
@@ -357,7 +369,7 @@
                         Apr 2024 – May 2025 · Full-time
                       </p>
                       <p class="antialiased text-xs font-medium">
-                        Produced 50+ Power&nbsp;BI reports for 30+ institutions’
+                        Produced 50+ Power&nbsp;BI reports for 30+ institutions'
                         space-management practice, presenting estate
                         optimisation roadmaps that saved universities up to
                         £2&nbsp;M per year on average. Designed an HTML web app
@@ -396,7 +408,8 @@
                 <div class="md:w-5/12 space-y-4" id="project-list">
                   <!-- Project 1 -->
                   <div
-                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    class="card shadow-sm cursor-pointer"
+                    style="background-color: var(--sidebar-bg);"
                     data-project-id="he-dashboards"
                     data-tags="powerbi,higher-ed,dashboards"
                   >
@@ -438,7 +451,8 @@
 
                   <!-- Project 2 -->
                   <div
-                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    class="card shadow-sm cursor-pointer"
+                    style="background-color: var(--sidebar-bg);"
                     data-project-id="utilisation-dashboard"
                     data-tags="powerbi,utilisation"
                   >
@@ -469,7 +483,8 @@
 
                   <!-- Project 3 -->
                   <div
-                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    class="card shadow-sm cursor-pointer"
+                    style="background-color: var(--sidebar-bg);"
                     data-project-id="survey-etl"
                     data-tags="python,etl,automation"
                   >
@@ -500,7 +515,8 @@
 
                   <!-- Project 4 -->
                   <div
-                    class="card bg-base-200 shadow-sm cursor-pointer"
+                    class="card shadow-sm cursor-pointer"
+                    style="background-color: var(--sidebar-bg);"
                     data-project-id="room-matching"
                     data-tags="tools,data-quality"
                   >
@@ -537,7 +553,8 @@
                   </p>
                   <div
                     id="project-gallery"
-                    class="h-[420px] md:h-[500px] bg-base-200 rounded-xl overflow-y-auto scrollbar-hide p-4 flex flex-col gap-4"
+                    class="h-[420px] md:h-[500px] rounded-xl overflow-y-auto scrollbar-hide p-4 flex flex-col gap-4"
+                    style="background-color: var(--sidebar-bg);"
                   >
                     <!-- Images injected by script.js -->
                   </div>
@@ -562,7 +579,7 @@
               </p>
               <div class="mockup-window border bg-base-200">
                 <div class="px-6 py-10 text-center text-xs text-base-content/70">
-                  No public apps yet. I’m currently focused on dashboards,
+                  No public apps yet. I'm currently focused on dashboards,
                   pipelines and internal tooling.
                 </div>
               </div>
