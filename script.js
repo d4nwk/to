@@ -1,37 +1,5 @@
-let isAuthorised = false;
-
 // Simple password gate
-(function passwordGate() {
-  const PASSWORD = "904672";
-  const maxAttempts = 3;
-  let attempts = 0;
-
-  while (attempts < maxAttempts) {
-    const input = prompt(
-      "This page is currently password-protected.\n\nEnter the password to continue:"
-    );
-
-    if (input === null) {
-      break;
-    }
-
-    if (input === PASSWORD) {
-      isAuthorised = true;
-      break;
-    } else {
-      alert("Incorrect password. Please try again.");
-      attempts += 1;
-    }
-  }
-
-  if (!isAuthorised) {
-    document.body.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:system-ui,sans-serif;text-align:center;padding:1rem;background-color:#f5f5f5;"><div><h1 style="font-size:1.25rem;font-weight:600;margin-bottom:0.5rem;">Access denied</h1><p style="font-size:0.9rem;color:#555;">Incorrect or no password entered. Reload the page to try again.</p></div></div>';
-  }
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
-  if (!isAuthorised) return;
 
   /* ---------- NAV / SECTIONS ---------- */
 
