@@ -1,11 +1,10 @@
 <svg width="900" height="900" viewBox="0 0 900 900" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_1_40)">
-<rect width="900" height="900" rx="90" fill="#FEFEFE"/>
-<rect width="540" height="180" rx="90" fill="black" fill-opacity="0.1"/>
-<rect width="180" height="540" rx="90" fill="black" fill-opacity="0.1"/>
-<rect y="360" width="540" height="180" rx="90" fill="black" fill-opacity="0.1"/>
-<rect x="360" y="360" width="180" height="540" rx="90" fill="black" fill-opacity="0.1"/>
-<rect x="360" y="720" width="540" height="180" rx="90" fill="black" fill-opacity="0.1"/>
+<rect width="540" height="180" rx="90" fill="white"/>
+<rect width="180" height="540" rx="90" fill="white"/>
+<rect y="360" width="540" height="180" rx="90" fill="white"/>
+<path d="M360 450C360 400.294 400.294 360 450 360C499.706 360 540 400.294 540 450V810C540 859.706 499.706 900 450 900C400.294 900 360 859.706 360 810V450Z" fill="white"/>
+<rect x="360" y="720" width="540" height="180" rx="90" fill="white"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M90 0C139.706 0 180 40.2944 180 90V180H90C40.2944 180 0 139.706 0 90C0 40.2944 40.2944 1.4496e-06 90 0Z" fill="black"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M180 450C180 499.706 139.706 540 90 540C74.0786 540 59.1227 535.866 46.1475 528.612C45.5147 528.259 44.8869 527.897 44.2637 527.528C18.081 512.049 0.419701 483.685 0.0078125 451.163C0.00290972 450.776 0 450.388 0 450C0 400.294 40.2944 360 90 360H180V450Z" fill="black"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M451.163 360.008C500.333 360.631 540 400.683 540 450C540 499.706 499.706 540 450 540H360V450C360 400.294 400.294 360 450 360C450.388 360 450.776 360.003 451.163 360.008Z" fill="black"/>
