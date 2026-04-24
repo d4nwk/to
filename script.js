@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const caption = document.createElement("p");
     caption.className =
         "absolute bottom-2 left-2 text-xs text-white px-2 py-1 rounded-full";
-    caption.style.backgroundColor = "#008080";
+    caption.style.backgroundColor = "#171717";
     caption.textContent = img.alt || "";
 
     wrapper.appendChild(imageEl);
