@@ -3,7 +3,6 @@ import { createRoot } from "https://esm.sh/react-dom@18.3.1/client";
 
 const TABS = ["WORK", "ABOUT", "CONTACT", "CV"];
 
-const BIO_TEXT = "Hi, I'm Dan, product designer with a background in data & mathematics.";
 const CONTACT_EMAIL = "danwk@naver.com";
 const CONTACT_SUBJECT = "Portfolio inquiry";
 const CV_PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
@@ -100,25 +99,22 @@ function RevealText({ children, className = "", as: Tag = "div" }) {
 
 function WorkSection() {
   const secondCardRef = useRef(null);
-  const fourthCardRef = useRef(null);
-  const [pastSecondThreshold, setPastSecondThreshold] = useState(false);
-  const [atFourthZone, setAtFourthZone] = useState(false);
+  const [handHidden, setHandHidden] = useState(false);
+  const [showMbmu2, setShowMbmu2] = useState(false);
 
   useEffect(() => {
     const secondEl = secondCardRef.current;
-    const fourthEl = fourthCardRef.current;
-    if (!secondEl || !fourthEl) return undefined;
+    if (!secondEl) return undefined;
 
     const updateMockupState = () => {
       const viewportHeight = window.innerHeight || 0;
       const secondTop = secondEl.getBoundingClientRect().top;
-      const fourthTop = fourthEl.getBoundingClientRect().top;
 
-      const nextPastSecond = secondTop <= viewportHeight * 0.72;
-      const nextAtFourth = fourthTop <= viewportHeight * 0.86;
+      const nextHandHidden = secondTop <= viewportHeight;
+      const nextShowMbmu2 = secondTop <= 72;
 
-      setPastSecondThreshold((prev) => (prev === nextPastSecond ? prev : nextPastSecond));
-      setAtFourthZone((prev) => (prev === nextAtFourth ? prev : nextAtFourth));
+      setHandHidden((prev) => (prev === nextHandHidden ? prev : nextHandHidden));
+      setShowMbmu2((prev) => (prev === nextShowMbmu2 ? prev : nextShowMbmu2));
     };
 
     updateMockupState();
@@ -132,8 +128,8 @@ function WorkSection() {
     };
   }, []);
 
-  const showCornerMockup = atFourthZone;
-  const showHandMockup = !pastSecondThreshold && !showCornerMockup;
+  const showCornerMockup = showMbmu2;
+  const showHandMockup = !handHidden;
 
   return (
     <section className="section-shell section-work">
@@ -153,7 +149,7 @@ function WorkSection() {
 
       <header className="hero-block">
         <RevealText as="p" className="hero-bio">
-          {BIO_TEXT}
+          Hi, I'm Dan,{" "}<br /><span className="bio-accent">product designer</span> with a background in <span className="bio-accent">data & mathematics</span>.
         </RevealText>
       </header>
 
@@ -161,12 +157,11 @@ function WorkSection() {
         {workItems.map((item, index) => {
           const itemNum = index + 1;
           const isSecond = itemNum === 2;
-          const isFourth = itemNum === 4;
 
           return (
             <article
               key={item.title}
-              ref={isSecond ? secondCardRef : isFourth ? fourthCardRef : undefined}
+              ref={isSecond ? secondCardRef : undefined}
               className={`project-card layout-${item.mediaShape} placement-${itemNum}`}
             >
               <div className="project-media-wrap">
@@ -188,10 +183,6 @@ function WorkSection() {
 function AboutSection() {
   return (
     <section className="section-shell">
-      <header className="section-heading-wrap">
-        <RevealText as="h1">About</RevealText>
-      </header>
-
       <div className="stack-list">
         {aboutItems.map((item, index) => (
           <article
@@ -247,7 +238,7 @@ function ContactSection() {
     <section className="section-shell">
       <div className="contact-grid">
         <RevealText className="contact-copy">
-          <h1>Get in touch</h1>
+          <h1>Let's work together</h1>
           <p>
             Have a project, collaboration, or product idea in mind? Send a note and I will get
             back to you.
@@ -300,7 +291,6 @@ function CvSection() {
   return (
     <section className="section-shell">
       <div className="cv-header">
-        <RevealText as="h1">CV</RevealText>
         <a className="download-btn" href={CV_PDF_URL} download>
           Download PDF
         </a>
@@ -341,6 +331,10 @@ function PortfolioApp() {
           --work-media-h: 320px;
         }
 
+        html {
+          scrollbar-gutter: stable;
+        }
+
         * {
           box-sizing: border-box;
         }
@@ -362,13 +356,14 @@ function PortfolioApp() {
           position: sticky;
           top: 0;
           z-index: 30;
-          height: var(--nav-height);
           background: rgba(199, 224, 223, 0.94);
           backdrop-filter: blur(2px);
         }
 
         .site-nav-inner {
-          height: 100%;
+          width: min(var(--max-width), calc(100% - 48px));
+          margin: 0 auto;
+          height: var(--nav-height);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -447,8 +442,7 @@ function PortfolioApp() {
 
         .hero-bio {
           margin: 0;
-          margin-top: clamp(54px, 7vh, 104px);
-          margin-left: clamp(-230px, -12vw, -170px);
+          margin-top: clamp(50px, 14vh, 90px);
           max-width: 860px;
           font-size: clamp(2.45rem, 6.95vw, 5.95rem);
           line-height: 1.03;
@@ -533,8 +527,20 @@ function PortfolioApp() {
           display: grid;
           grid-template-columns: minmax(0, var(--media-box-w)) minmax(0, 1fr);
           gap: var(--card-pad);
-          align-items: start;
-          min-height: var(--vertical-card-w);
+          align-items: stretch;
+          height: min(532px, calc((100vw - 104px) / 2));
+        }
+
+        .layout-horizontal .project-media-wrap {
+          height: auto;
+        }
+
+        .layout-horizontal .project-media {
+          object-fit: cover;
+        }
+
+        .layout-horizontal .card-content {
+          align-self: start;
         }
 
         .layout-vertical {
@@ -619,7 +625,7 @@ function PortfolioApp() {
           display: grid;
           grid-template-columns: 1.1fr 1fr;
           gap: 24px;
-          background: var(--color-surface);
+          background: #F1FDFA;
           border: 1px solid var(--color-border);
           border-radius: var(--radius-lg);
           padding: 22px;
@@ -654,7 +660,7 @@ function PortfolioApp() {
         }
 
         .contact-grid {
-          margin-top: 24px;
+          margin-top: 26px;
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 32px;
@@ -668,7 +674,7 @@ function PortfolioApp() {
 
         .contact-copy h1 {
           margin: 0;
-          font-size: clamp(2rem, 4vw, 3rem);
+          font-size: clamp(1.84rem, 5.21vw, 4.46rem);
           letter-spacing: -0.02em;
         }
 
@@ -732,7 +738,7 @@ function PortfolioApp() {
           margin-top: 10px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
           gap: 16px;
         }
 
@@ -793,12 +799,28 @@ function PortfolioApp() {
           transform: translateX(0);
         }
 
+        .card-content.text-reveal {
+          display: flex;
+        }
+
+        .bio-accent {
+          color: var(--color-link);
+        }
+
+        p.hero-bio {
+          margin-left: clamp(-180px, -22vw, -60px);
+          padding-left: 0;
+        }
+
         @media (max-width: 1140px) {
           .hero-bio {
-            margin-left: clamp(-96px, -6vw, -56px);
-            margin-top: 28px;
+            margin-top: 56px;
             font-size: clamp(2.2rem, 6vw, 4.8rem);
             max-width: 760px;
+          }
+
+          p.hero-bio {
+            margin-left: clamp(-180px, -10vw, -100px);
           }
 
           .hero-block {
@@ -812,7 +834,8 @@ function PortfolioApp() {
         }
 
         @media (max-width: 940px) {
-          .site-shell {
+          .site-shell,
+          .site-nav-inner {
             width: min(var(--max-width), calc(100% - 32px));
           }
 
@@ -850,6 +873,7 @@ function PortfolioApp() {
           .layout-vertical {
             grid-template-columns: 1fr;
             grid-template-rows: auto auto;
+            height: auto;
           }
 
           .project-media-wrap {
@@ -873,11 +897,12 @@ function PortfolioApp() {
         }
 
         @media (max-width: 560px) {
-          .site-shell {
+          .site-shell,
+          .site-nav-inner {
             width: min(var(--max-width), calc(100% - 24px));
           }
 
-          .site-nav {
+          .site-nav-inner {
             height: 64px;
           }
 
@@ -920,32 +945,32 @@ function PortfolioApp() {
         }
       `}</style>
 
-      <div className="site-shell">
-        <nav className="site-nav" aria-label="Primary">
-          <div className="site-nav-inner">
-            <div className="site-nav-brand">
-              <img className="site-nav-mark" src="./ds4.svg" alt="DS logo" width="40" height="40" />
-            </div>
-
-            <div className="site-nav-tabs">
-              {TABS.map((tab) => {
-                const isActive = tab === activeTab;
-                return (
-                  <button
-                    key={tab}
-                    type="button"
-                    className={`tab-btn ${isActive ? "tab-btn-active" : ""}`}
-                    onClick={() => setActiveTab(tab)}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    {tab}
-                  </button>
-                );
-              })}
-            </div>
+      <nav className="site-nav" aria-label="Primary">
+        <div className="site-nav-inner">
+          <div className="site-nav-brand">
+            <img className="site-nav-mark" src="./ds4.svg" alt="DS logo" width="40" height="40" />
           </div>
-        </nav>
 
+          <div className="site-nav-tabs">
+            {TABS.map((tab) => {
+              const isActive = tab === activeTab;
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  className={`tab-btn ${isActive ? "tab-btn-active" : ""}`}
+                  onClick={() => setActiveTab(tab)}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {tab}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
+      <div className="site-shell">
         {activeTab === "WORK" && <WorkSection />}
         {activeTab === "ABOUT" && <AboutSection />}
         {activeTab === "CONTACT" && <ContactSection />}
