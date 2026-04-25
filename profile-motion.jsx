@@ -509,6 +509,29 @@ function CvSection() {
 
 function PortfolioApp() {
   const [activeTab, setActiveTab] = useState("WORK");
+  const [navShadow, setNavShadow] = useState(false);
+
+  useEffect(() => {
+    const getThreshold = () => {
+      const styles = getComputedStyle(document.documentElement);
+      const desktopGap = parseFloat(styles.getPropertyValue("--work-gap")) || 56;
+      const mobileGap = parseFloat(styles.getPropertyValue("--mobile-flow-gap")) || desktopGap;
+      const base = window.matchMedia("(max-width: 940px)").matches ? mobileGap : desktopGap;
+      return Math.max(0, base - 22);
+    };
+
+    const onViewportMove = () => {
+      setNavShadow(window.scrollY >= getThreshold());
+    };
+
+    onViewportMove();
+    window.addEventListener("scroll", onViewportMove, { passive: true });
+    window.addEventListener("resize", onViewportMove);
+    return () => {
+      window.removeEventListener("scroll", onViewportMove);
+      window.removeEventListener("resize", onViewportMove);
+    };
+  }, [activeTab]);
 
   return (
     <div className="portfolio-app">
@@ -523,7 +546,7 @@ function PortfolioApp() {
           --radius-md: 16px;
           --max-width: 1120px;
           --slide-distance: 22px;
-          --nav-height: calc(72px + env(safe-area-inset-top, 0px));
+          --nav-height: 72px;
           --work-gap: 56px;
           --card-pad: 22px;
           --card-outline: #4f5c61;
@@ -558,13 +581,40 @@ function PortfolioApp() {
         .site-nav {
           position: sticky;
           top: 0;
-          z-index: 30;
+          z-index: 9999999999;
+          isolation: isolate;
+          overflow: visible;
           background: rgba(199, 224, 223, 0.94);
           backdrop-filter: blur(2px);
-          padding-top: env(safe-area-inset-top, 0px);
+          box-shadow: none;
+          transition: box-shadow 0.2s ease;
+        }
+
+        .site-nav.nav-shadow {
+          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .site-nav::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          height: 10px;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+          background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+          z-index: 2;
+        }
+
+        .site-nav.nav-shadow::after {
+          opacity: 0.72;
         }
 
         .site-nav-inner {
+          position: relative;
+          z-index: 3;
           width: min(var(--max-width), calc(100% - 48px));
           margin: 0 auto;
           height: var(--nav-height);
@@ -605,6 +655,9 @@ function PortfolioApp() {
           font-size: 1rem;
           letter-spacing: 0.04em;
           cursor: pointer;
+          opacity: 1;
+          outline: none;
+          box-shadow: none;
           transition: opacity 180ms ease;
         }
 
@@ -622,7 +675,16 @@ function PortfolioApp() {
         }
 
         .tab-btn:hover {
-          opacity: 0.72;
+          opacity: 1;
+        }
+
+        .tab-btn:focus,
+        .tab-btn:active,
+        .tab-btn:focus-visible {
+          opacity: 1;
+          color: var(--color-link);
+          outline: none;
+          box-shadow: none;
         }
 
         .tab-btn-active::after {
@@ -1362,12 +1424,22 @@ function PortfolioApp() {
             margin-top: 0;
             padding-top: calc(var(--mobile-flow-gap) + 5px);
           }
+
+          .site-nav {
+            background: var(--color-bg);
+            backdrop-filter: none;
+          }
+
         }
 
         @media (max-width: 560px) {
           .site-shell,
           .site-nav-inner {
             width: min(var(--max-width), calc(100% - 24px));
+          }
+
+          :root {
+            --nav-height: 64px;
           }
 
           .site-nav-inner {
@@ -1411,7 +1483,7 @@ function PortfolioApp() {
         }
       `}</style>
 
-      <nav className="site-nav" aria-label="Primary">
+      <nav className={`site-nav${navShadow ? " nav-shadow" : ""}`} aria-label="Primary">
         <div className="site-nav-inner">
           <div className="site-nav-brand">
             <img className="site-nav-mark" src="./ds4.svg" alt="DS logo" width="40" height="40" />
