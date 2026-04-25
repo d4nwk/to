@@ -523,7 +523,7 @@ function PortfolioApp() {
           --radius-md: 16px;
           --max-width: 1120px;
           --slide-distance: 22px;
-          --nav-height: 72px;
+          --nav-height: calc(72px + env(safe-area-inset-top, 0px));
           --work-gap: 56px;
           --card-pad: 22px;
           --card-outline: #4f5c61;
@@ -561,6 +561,7 @@ function PortfolioApp() {
           z-index: 30;
           background: rgba(199, 224, 223, 0.94);
           backdrop-filter: blur(2px);
+          padding-top: env(safe-area-inset-top, 0px);
         }
 
         .site-nav-inner {
