@@ -44,24 +44,24 @@ const workItems = [
 
 const aboutItems = [
   {
-    title: "How I work",
+    title: "Nice to meet you",
     description:
-      "I blend product thinking with analytical rigor, turning ambiguity into clear flows, practical interfaces, and measurable outcomes.",
-    image: "https://placehold.co/1000x700/c7e0df/171717?text=About+01",
+      "After graduating from University of Leeds in 2023 with a Bachelor's in Mathematics and Philosophy, I started my career in tech as an analyst for a data consultancy startup servicing universities. Enjoying the UX research and UI design behind dashboards more than the analysis itself, but still heavily involved in full-stack development, I pivoted to my current role as Business Intelligence Developer. I've built dozens of bespoke tools for 50+ clients across 3 continents, and I'm now looking to transition fully into product design, combining my technical background and insatiable creativity to help even more people.",
+    image: "./cat.png",
     alt: "Placeholder image for About section 01",
   },
   {
-    title: "What I focus on",
+    title: "My approach to design",
     description:
-      "My practice emphasizes user understanding, information clarity, and iteration through evidence, not assumptions.",
-    image: "https://placehold.co/1000x700/b8d7d6/171717?text=About+02",
+      "During my degree, I spent a year on an exchange programme in Korea where I was exposed to a new world of visual aesthetics and digital experiences. While the former was inspiring, the latter was oftentimes frustrating, with many apps and websites suffering from poor usability and accessibility. This sparked my interest in user-centered design, and I set out to ensure my products are not only visually appealing but also intuitive and inclusive. I believe that good design solves real problems and enhances people's lives, and this informs my decisions in every project.",
+    image: "./kor.png",
     alt: "Placeholder image for About section 02",
   },
   {
-    title: "What I am building toward",
+    title: "When I'm not working",
     description:
-      "I enjoy projects where systems, data, and product design intersect, especially where thoughtful UX can simplify complex decisions.",
-    image: "https://placehold.co/1000x700/a9cecd/171717?text=About+03",
+      "...I often still am, just not in an office. I'm fascinated by languages and taught myself Korean to fluency, achieving the highest level (6) on the TOPIK after six years. I also recently learned to enjoy working out (arguably more difficult) and raised over $2,000 for Cancer Research UK by doing 100 push-ups a day in April. I see self-development as a lifelong pursuit and find that it feeds back into my work by keeping me curious, empathetic and unsatisfied until I've given my all.",
+    image: "./pec.png",
     alt: "Placeholder image for About section 03",
   },
 ];
@@ -103,7 +103,7 @@ function RevealText({ children, className = "", as: Tag = "div", style }) {
   );
 }
 
-function WorkSection() {
+function WorkSection({ onNavigateTab }) {
   const stage1Ref = useRef(null);
   const stage2Ref = useRef(null);
   const scrollRafRef = useRef(0);
@@ -259,7 +259,7 @@ function WorkSection() {
             <div className="hero-swap-stack">
               <div className="hero-copy-layer" style={{ opacity: heroOpacity }}>
                 <RevealText as="p" className="hero-bio">
-                  Hi, I'm Dan, <br />
+                  Hi, I'm Dan <br />
                   <span className="bio-accent">product designer</span> with a background in{" "}
                   <span className="bio-accent">data & mathematics</span>.
                 </RevealText>
@@ -318,15 +318,31 @@ function WorkSection() {
             </RevealText>
           </article>
         </div>
+
+        <div className="work-tail-cta">
+          <RevealText className="work-cta-reveal">
+            <a
+              href="#contact"
+              className="work-cta-link"
+              onClick={(event) => {
+                event.preventDefault();
+                onNavigateTab("CONTACT");
+              }}
+            >
+              Let's work together <span className="work-cta-chevron" aria-hidden="true">›</span>
+            </a>
+          </RevealText>
+        </div>
       </div>
 
       <div className="work-mobile">
         <header className="work-mobile-hero">
           <RevealText as="p" className="hero-bio">
-            Hi, I'm Dan,<br />
-            <span className="bio-accent">product designer</span><br />
-            with a background in<br />
-            <span className="bio-accent">data & mathematics</span>.
+            Hi, I'm Dan<br />
+            a <span className="bio-accent">product designer</span><br />
+            building tools for<br />
+            <span className="bio-underline">people</span> who need to<br />
+            understand <span className="bio-underline">things</span>.
           </RevealText>
         </header>
 
@@ -375,12 +391,27 @@ function WorkSection() {
             </RevealText>
           </article>
         </div>
+
+        <div className="work-tail-cta">
+          <RevealText className="work-cta-reveal">
+            <a
+              href="#contact"
+              className="work-cta-link"
+              onClick={(event) => {
+                event.preventDefault();
+                onNavigateTab("CONTACT");
+              }}
+            >
+              Let's work together <span className="work-cta-chevron" aria-hidden="true">›</span>
+            </a>
+          </RevealText>
+        </div>
       </div>
     </section>
   );
 }
 
-function AboutSection() {
+function AboutSection({ onNavigateTab }) {
   return (
     <section className="section-shell">
       <div className="stack-list">
@@ -399,6 +430,21 @@ function AboutSection() {
             </RevealText>
           </article>
         ))}
+      </div>
+
+      <div className="about-tail-cta">
+        <RevealText className="work-cta-reveal">
+          <a
+            href="#contact"
+            className="work-cta-link"
+            onClick={(event) => {
+              event.preventDefault();
+              onNavigateTab("CONTACT");
+            }}
+          >
+            Let's work together <span className="work-cta-chevron" aria-hidden="true">›</span>
+          </a>
+        </RevealText>
       </div>
     </section>
   );
@@ -517,7 +563,7 @@ function PortfolioApp() {
       const desktopGap = parseFloat(styles.getPropertyValue("--work-gap")) || 56;
       const mobileGap = parseFloat(styles.getPropertyValue("--mobile-flow-gap")) || desktopGap;
       const base = window.matchMedia("(max-width: 940px)").matches ? mobileGap : desktopGap;
-      return Math.max(0, base - 22);
+      return Math.max(0, base - 25);
     };
 
     const onViewportMove = () => {
@@ -642,6 +688,7 @@ function PortfolioApp() {
           display: flex;
           align-items: center;
           gap: 28px;
+          -webkit-tap-highlight-color: transparent;
         }
 
         .tab-btn {
@@ -659,6 +706,9 @@ function PortfolioApp() {
           outline: none;
           box-shadow: none;
           transition: opacity 180ms ease;
+          -webkit-tap-highlight-color: transparent;
+          -webkit-touch-callout: none;
+          user-select: none;
         }
 
         .tab-btn::after {
@@ -839,6 +889,36 @@ function PortfolioApp() {
           gap: var(--work-gap);
           position: relative;
           z-index: 5;
+        }
+
+        .work-tail-cta {
+          margin-top: var(--work-gap);
+          padding-bottom: var(--work-gap);
+          display: flex;
+          justify-content: center;
+        }
+
+        .work-cta-link {
+          color: var(--color-link);
+          text-decoration: none;
+          font-size: 1rem;
+          letter-spacing: 0.04em;
+          font-weight: 400;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .work-cta-reveal.text-reveal {
+          display: inline-block;
+          margin-left: 0;
+          padding-left: 0;
+        }
+
+        .work-cta-chevron {
+          font-size: 1em;
+          font-weight: 400;
+          line-height: 1;
         }
 
         .project-card {
@@ -1054,9 +1134,17 @@ function PortfolioApp() {
         }
 
         .stack-list {
+          --stack-gap: 28px;
           display: grid;
-          gap: 28px;
+          gap: var(--stack-gap);
           margin-top: 26px;
+        }
+
+        .about-tail-cta {
+          margin-top: var(--work-gap);
+          padding-bottom: var(--work-gap);
+          display: flex;
+          justify-content: center;
         }
 
         .split-card {
@@ -1083,6 +1171,7 @@ function PortfolioApp() {
 
         .card-media-wrap {
           min-height: 260px;
+          height: var(--work-media-h);
           border-radius: var(--radius-md);
           overflow: hidden;
           border: 1px solid var(--color-border);
@@ -1092,7 +1181,7 @@ function PortfolioApp() {
         .card-media {
           width: 100%;
           height: 100%;
-          min-height: 260px;
+          min-height: 0;
           object-fit: cover;
           display: block;
         }
@@ -1246,6 +1335,13 @@ function PortfolioApp() {
           color: var(--color-link);
         }
 
+        .bio-underline {
+          text-decoration-line: underline;
+          text-decoration-color: #9ec4c1;
+          text-decoration-thickness: 0.08em;
+          text-underline-offset: 0.06em;
+        }
+
         p.hero-bio {
           margin-left: clamp(-180px, -22vw, -60px);
           padding-left: 0;
@@ -1363,6 +1459,16 @@ function PortfolioApp() {
             gap: var(--mobile-flow-gap);
           }
 
+          .work-tail-cta {
+            margin-top: var(--mobile-flow-gap);
+            padding-bottom: var(--mobile-flow-gap);
+          }
+
+          .about-tail-cta {
+            margin-top: var(--mobile-flow-gap);
+            padding-bottom: var(--mobile-flow-gap);
+          }
+
           .project-card.full-right-media .project-media-wrap,
           .project-card.full-right-media .card-content {
             order: initial;
@@ -1390,6 +1496,17 @@ function PortfolioApp() {
           .split-card,
           .split-card-reverse {
             grid-template-columns: 1fr;
+          }
+
+          .split-card .card-media-wrap {
+            height: 300px;
+            min-height: 0;
+          }
+
+          .split-card .card-media {
+            min-height: 0;
+            height: 100%;
+            object-fit: cover;
           }
 
           .split-card-reverse .card-media-wrap,
@@ -1474,7 +1591,7 @@ function PortfolioApp() {
           }
 
           .work-mobile-hero .hero-bio {
-            font-size: calc((100vw - 24px) / 9);
+            font-size: calc((100vw - 24px) / 8.66);
           }
 
           .contact-copy h1 {
@@ -1509,8 +1626,8 @@ function PortfolioApp() {
       </nav>
 
       <div className="site-shell">
-        {activeTab === "WORK" && <WorkSection />}
-        {activeTab === "ABOUT" && <AboutSection />}
+        {activeTab === "WORK" && <WorkSection onNavigateTab={setActiveTab} />}
+        {activeTab === "ABOUT" && <AboutSection onNavigateTab={setActiveTab} />}
         {activeTab === "CONTACT" && <ContactSection />}
         {activeTab === "CV" && <CvSection />}
       </div>
