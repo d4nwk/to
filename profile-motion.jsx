@@ -12,17 +12,17 @@ const workItems = [
     title: "Custom dashboard platform with drag-and-drop analysis 'blocks'",
     description:
       "Designed a modular analytics workflow where users assemble reusable analysis blocks and build dashboards without writing code.",
-    image: "./mbmu.png",
+    image: "./macbook.png",
     alt: "Project 01 mockup",
-    mediaShape: "vertical",
+    layout: "half-left",
   },
   {
     title: "ML-powered news article vocab acquisition iOS app",
     description:
       "Shaped the product experience for a mobile learning app that extracts high-value vocabulary from live news content and personalizes review.",
-    image: "./ipmu.png",
+    image: "./iphone.png",
     alt: "Project 02 mockup",
-    mediaShape: "horizontal",
+    layout: "half-right",
   },
   {
     title: "Data consultancy company website visual & structural overhaul",
@@ -30,7 +30,7 @@ const workItems = [
       "Reworked information architecture and visual hierarchy to better communicate services, case studies, and trust signals for new clients.",
     image: "https://placehold.co/1200x760/171717/c7e0df?text=Project+03",
     alt: "Project 03 placeholder",
-    mediaShape: "horizontal",
+    layout: "full-left-media",
   },
   {
     title: "Placeholder 4",
@@ -38,7 +38,7 @@ const workItems = [
       "Reserved for an additional case study card with project summary, outcomes, and links once final assets are ready.",
     image: "https://placehold.co/860x1140/171717/c7e0df?text=Project+04",
     alt: "Project 04 placeholder",
-    mediaShape: "vertical",
+    layout: "full-right-media",
   },
 ];
 
@@ -66,7 +66,9 @@ const aboutItems = [
   },
 ];
 
-function RevealText({ children, className = "", as: Tag = "div" }) {
+const clamp01 = (value) => Math.max(0, Math.min(1, value));
+
+function RevealText({ children, className = "", as: Tag = "div", style }) {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -91,90 +93,288 @@ function RevealText({ children, className = "", as: Tag = "div" }) {
   }, []);
 
   return (
-    <Tag ref={ref} className={`text-reveal ${isVisible ? "is-visible" : ""} ${className}`.trim()}>
+    <Tag
+      ref={ref}
+      style={style}
+      className={`text-reveal ${isVisible ? "is-visible" : ""} ${className}`.trim()}
+    >
       {children}
     </Tag>
   );
 }
 
 function WorkSection() {
-  const secondCardRef = useRef(null);
-  const [handHidden, setHandHidden] = useState(false);
-  const [showMbmu2, setShowMbmu2] = useState(false);
+  const stage1Ref = useRef(null);
+  const stage2Ref = useRef(null);
+  const scrollRafRef = useRef(0);
+  const swapRafRef = useRef(0);
+  const swapStartedAtRef = useRef(0);
+  const phaseRef = useRef("hero_idle");
+  const swapProgressRef = useRef(0);
+  const swappingRef = useRef(false);
+
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== "undefined" ? window.innerWidth >= 941 : true
+  );
+  const [phase, setPhase] = useState("hero_idle");
+  const [swapProgress, setSwapProgress] = useState(0);
 
   useEffect(() => {
-    const secondEl = secondCardRef.current;
-    if (!secondEl) return undefined;
+    phaseRef.current = phase;
+  }, [phase]);
 
-    const updateMockupState = () => {
-      const viewportHeight = window.innerHeight || 0;
-      const secondTop = secondEl.getBoundingClientRect().top;
+  useEffect(() => {
+    swapProgressRef.current = swapProgress;
+  }, [swapProgress]);
 
-      const nextHandHidden = secondTop <= viewportHeight;
-      const nextShowMbmu2 = secondTop <= 72;
+  useEffect(() => {
+    const SWAP_DURATION_MS = 220;
 
-      setHandHidden((prev) => (prev === nextHandHidden ? prev : nextHandHidden));
-      setShowMbmu2((prev) => (prev === nextShowMbmu2 ? prev : nextShowMbmu2));
+    const stopSwap = () => {
+      if (swapRafRef.current) {
+        window.cancelAnimationFrame(swapRafRef.current);
+        swapRafRef.current = 0;
+      }
+      swappingRef.current = false;
     };
 
-    updateMockupState();
+    const startSwap = () => {
+      if (swappingRef.current || phaseRef.current !== "hero_idle") return;
 
-    window.addEventListener("scroll", updateMockupState, { passive: true });
-    window.addEventListener("resize", updateMockupState);
+      swappingRef.current = true;
+      swapStartedAtRef.current = 0;
+      setPhase("hero_to_card1_swap");
+      setSwapProgress(0);
+
+      const stepSwap = (timestamp) => {
+        if (!swapStartedAtRef.current) swapStartedAtRef.current = timestamp;
+        const elapsed = timestamp - swapStartedAtRef.current;
+        const next = clamp01(elapsed / SWAP_DURATION_MS);
+        setSwapProgress(next);
+
+        if (next < 1) {
+          swapRafRef.current = window.requestAnimationFrame(stepSwap);
+          return;
+        }
+
+        swappingRef.current = false;
+        swapRafRef.current = 0;
+        setPhase("card1_scroll");
+      };
+
+      swapRafRef.current = window.requestAnimationFrame(stepSwap);
+    };
+
+    const updateState = () => {
+      const nextDesktop = window.innerWidth >= 941;
+      if (nextDesktop !== isDesktop) setIsDesktop(nextDesktop);
+
+      if (!nextDesktop) {
+        stopSwap();
+        if (phaseRef.current !== "hero_idle") setPhase("hero_idle");
+        if (swapProgressRef.current !== 0) setSwapProgress(0);
+        return;
+      }
+
+      const stage1El = stage1Ref.current;
+      const stage2El = stage2Ref.current;
+      if (!stage1El || !stage2El) return;
+
+      const viewportHeight = Math.max(1, window.innerHeight || 1);
+      const navOffset = 86;
+      const trigger = viewportHeight * 0.12;
+      const reset = viewportHeight * 0.06;
+
+      const stage1Top = stage1El.getBoundingClientRect().top + window.scrollY;
+      const stage1Local = Math.max(0, window.scrollY - stage1Top);
+
+      const stage2Rect = stage2El.getBoundingClientRect();
+      const stage2Active =
+        stage2Rect.top <= navOffset + 32 && stage2Rect.bottom >= navOffset + viewportHeight * 0.5;
+      const stage2Passed = stage2Rect.bottom < navOffset + viewportHeight * 0.3;
+
+      if (!swappingRef.current) {
+        if (stage1Local <= reset) {
+          if (phaseRef.current !== "hero_idle") setPhase("hero_idle");
+          if (swapProgressRef.current !== 0) setSwapProgress(0);
+          return;
+        }
+
+        if (phaseRef.current === "hero_idle" && stage1Local >= trigger) {
+          startSwap();
+          return;
+        }
+
+        if (phaseRef.current !== "hero_idle") {
+          const nextPhase = stage2Passed
+            ? "post_cluster"
+            : stage2Active
+              ? "card2_cluster"
+              : "card1_scroll";
+          if (phaseRef.current !== nextPhase) setPhase(nextPhase);
+        }
+      }
+    };
+
+    const onViewportMove = () => {
+      if (scrollRafRef.current) return;
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        scrollRafRef.current = 0;
+        updateState();
+      });
+    };
+
+    updateState();
+    window.addEventListener("scroll", onViewportMove, { passive: true });
+    window.addEventListener("resize", onViewportMove);
 
     return () => {
-      window.removeEventListener("scroll", updateMockupState);
-      window.removeEventListener("resize", updateMockupState);
+      if (scrollRafRef.current) window.cancelAnimationFrame(scrollRafRef.current);
+      stopSwap();
+      window.removeEventListener("scroll", onViewportMove);
+      window.removeEventListener("resize", onViewportMove);
     };
-  }, []);
+  }, [isDesktop]);
 
-  const showCornerMockup = showMbmu2;
-  const showHandMockup = !handHidden;
+  const [item1, item2, item3, item4] = workItems;
+
+  const heroOpacity =
+    phase === "hero_to_card1_swap" ? 1 - swapProgress : phase === "hero_idle" ? 1 : 0;
+  const card1Opacity =
+    phase === "hero_to_card1_swap" ? swapProgress : phase === "hero_idle" ? 0 : 1;
+  const showDesktopCluster = phase === "card2_cluster";
 
   return (
     <section className="section-shell section-work">
-      <img
-        className={`hero-corner-mockup ${showHandMockup ? "" : "is-hidden"}`.trim()}
-        src="./handmockup2.png"
-        alt="Hand device mockup"
-        aria-hidden="true"
-      />
+      <div className="work-desktop">
+        <div ref={stage1Ref} className="work-phase work-phase-hero">
+          <div className="work-phase-sticky">
+            <img
+              className="macbook-phase-mockup"
+              src="./macbook.png"
+              alt="Macbook data dashboard mockup"
+              aria-hidden="true"
+            />
 
-      <img
-        className={`work-corner-mockup ${showCornerMockup ? "is-visible" : ""}`.trim()}
-        src="./mbmu2.png"
-        alt="Bottom-left corner dashboard mockup"
-        aria-hidden="true"
-      />
-
-      <header className="hero-block">
-        <RevealText as="p" className="hero-bio">
-          Hi, I'm Dan,{" "}<br /><span className="bio-accent">product designer</span> with a background in <span className="bio-accent">data & mathematics</span>.
-        </RevealText>
-      </header>
-
-      <div className="work-grid">
-        {workItems.map((item, index) => {
-          const itemNum = index + 1;
-          const isSecond = itemNum === 2;
-
-          return (
-            <article
-              key={item.title}
-              ref={isSecond ? secondCardRef : undefined}
-              className={`project-card layout-${item.mediaShape} placement-${itemNum}`}
-            >
-              <div className="project-media-wrap">
-                <img className="project-media" src={item.image} alt={item.alt} loading="lazy" />
+            <div className="hero-swap-stack">
+              <div className="hero-copy-layer" style={{ opacity: heroOpacity }}>
+                <RevealText as="p" className="hero-bio">
+                  Hi, I'm Dan, <br />
+                  <span className="bio-accent">product designer</span> with a background in{" "}
+                  <span className="bio-accent">data & mathematics</span>.
+                </RevealText>
               </div>
 
-              <RevealText className="card-content">
-                <h2>{item.title}</h2>
-                <p>{item.description}</p>
-              </RevealText>
+              <article
+                className="project-card info-card half-left pointer-right phase-card-one"
+                style={{ opacity: card1Opacity, pointerEvents: card1Opacity > 0.98 ? "auto" : "none" }}
+              >
+                <div className="card-content">
+                  <h2>{item1.title}</h2>
+                  <p>{item1.description}</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div ref={stage2Ref} className="work-phase work-phase-cluster">
+          <div className="work-phase-sticky">
+            <div className={`iphone-cluster-fixed ${showDesktopCluster ? "is-visible" : ""}`.trim()}>
+              <img className="iphone-back-left" src="./iphone.png" alt="" aria-hidden="true" />
+              <img className="iphone-front-center" src="./iphone2.png" alt="" aria-hidden="true" />
+              <img className="iphone-back-right" src="./iphone3.png" alt="" aria-hidden="true" />
+            </div>
+
+            <article className="project-card info-card half-right pointer-left phase-card-two">
+              <div className="card-content">
+                <h2>{item2.title}</h2>
+                <p>{item2.description}</p>
+              </div>
             </article>
-          );
-        })}
+          </div>
+        </div>
+
+        <div className="cluster-clearance" aria-hidden="true" />
+
+        <div className="work-grid-post">
+          <article className="project-card full-left-media">
+            <div className="project-media-wrap">
+              <img className="project-media" src={item3.image} alt={item3.alt} loading="lazy" />
+            </div>
+            <RevealText className="card-content">
+              <h2>{item3.title}</h2>
+              <p>{item3.description}</p>
+            </RevealText>
+          </article>
+
+          <article className="project-card full-right-media">
+            <div className="project-media-wrap">
+              <img className="project-media" src={item4.image} alt={item4.alt} loading="lazy" />
+            </div>
+            <RevealText className="card-content">
+              <h2>{item4.title}</h2>
+              <p>{item4.description}</p>
+            </RevealText>
+          </article>
+        </div>
+      </div>
+
+      <div className="work-mobile">
+        <header className="work-mobile-hero">
+          <RevealText as="p" className="hero-bio">
+            Hi, I'm Dan,<br />
+            <span className="bio-accent">product designer</span><br />
+            with a background in<br />
+            <span className="bio-accent">data & mathematics</span>.
+          </RevealText>
+        </header>
+
+        <div className="mobile-macbook-wrap">
+          <img src="./macbook.png" alt="Macbook data dashboard mockup" loading="lazy" />
+        </div>
+
+        <article className="project-card info-card pointer-top">
+          <div className="card-content">
+            <h2>{item1.title}</h2>
+            <p>{item1.description}</p>
+          </div>
+        </article>
+
+        <article className="project-card info-card pointer-bottom">
+          <div className="card-content">
+            <h2>{item2.title}</h2>
+            <p>{item2.description}</p>
+          </div>
+        </article>
+
+        <div className="iphone-cluster-mobile">
+          <img className="iphone-back-left" src="./iphone.png" alt="" aria-hidden="true" />
+          <img className="iphone-front-center" src="./iphone2.png" alt="" aria-hidden="true" />
+          <img className="iphone-back-right" src="./iphone3.png" alt="" aria-hidden="true" />
+        </div>
+
+        <div className="work-grid-post">
+          <article className="project-card full-left-media">
+            <div className="project-media-wrap">
+              <img className="project-media" src={item3.image} alt={item3.alt} loading="lazy" />
+            </div>
+            <RevealText className="card-content">
+              <h2>{item3.title}</h2>
+              <p>{item3.description}</p>
+            </RevealText>
+          </article>
+
+          <article className="project-card full-right-media">
+            <div className="project-media-wrap">
+              <img className="project-media" src={item4.image} alt={item4.alt} loading="lazy" />
+            </div>
+            <RevealText className="card-content">
+              <h2>{item4.title}</h2>
+              <p>{item4.description}</p>
+            </RevealText>
+          </article>
+        </div>
       </div>
     </section>
   );
@@ -326,9 +526,12 @@ function PortfolioApp() {
           --nav-height: 72px;
           --work-gap: 56px;
           --card-pad: 22px;
+          --card-outline: #4f5c61;
+          --pointer-size: 14px;
+          --pointer-protrusion: calc(var(--pointer-size) + 1px);
           --vertical-card-w: calc((100% - var(--work-gap)) / 2);
           --media-box-w: 500px;
-          --work-media-h: 320px;
+          --work-media-h: 336px;
         }
 
         html {
@@ -433,18 +636,73 @@ function PortfolioApp() {
           position: relative;
         }
 
-        .hero-block {
+        .work-desktop {
+          display: block;
+        }
+
+        .work-mobile {
+          display: none;
+        }
+
+        .work-phase {
           position: relative;
-          min-height: clamp(480px, 68vh, 760px);
-          padding: 42px 0 14px;
+        }
+
+        .work-phase-hero {
+          min-height: 196vh;
+        }
+
+        .work-phase-cluster {
+          min-height: 172vh;
+          margin-top: 10px;
+        }
+
+        .work-phase-sticky {
+          position: sticky;
+          top: calc(var(--nav-height) + 8px);
+          min-height: calc(100vh - var(--nav-height) - 8px);
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
           overflow: visible;
+          z-index: 3;
+        }
+
+        .work-phase-cluster .work-phase-sticky {
+          justify-content: flex-end;
+        }
+
+        .macbook-phase-mockup {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: auto;
+          max-width: min(64vw, 980px);
+          max-height: 60vh;
+          height: auto;
+          pointer-events: none;
+          user-select: none;
+          z-index: 1;
+        }
+
+        .hero-swap-stack {
+          position: relative;
+          width: 100%;
+          min-height: calc(100vh - var(--nav-height) - 12px);
+          display: flex;
+          align-items: center;
+          z-index: 5;
+        }
+
+        .hero-copy-layer {
+          width: var(--vertical-card-w);
+          transition: opacity 220ms ease;
         }
 
         .hero-bio {
           margin: 0;
-          margin-top: clamp(50px, 14vh, 90px);
           max-width: 860px;
-          font-size: clamp(2.45rem, 6.95vw, 5.95rem);
+          font-size: clamp(2.2rem, 6.28vw, 5.35rem);
           line-height: 1.03;
           letter-spacing: -0.022em;
           position: relative;
@@ -452,107 +710,119 @@ function PortfolioApp() {
           display: inline-block;
         }
 
-        .hero-corner-mockup {
+        .phase-card-one {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          transition: opacity 120ms linear;
+        }
+
+        .phase-card-two {
+          position: relative;
+          z-index: 7;
+        }
+
+        .iphone-cluster-fixed {
           position: fixed;
-          right: 0;
+          left: 0;
           bottom: 0;
-          width: clamp(256px, 36.8vw, 624px);
-          height: auto;
+          width: min(64vw, 980px);
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-start;
           pointer-events: none;
           user-select: none;
-          z-index: 3;
-          transform: translateX(0);
-          opacity: 1;
-          transition: transform 380ms ease, opacity 380ms ease;
-        }
-
-        .hero-corner-mockup.is-hidden {
-          transform: translateX(140px);
           opacity: 0;
-        }
-
-        .work-corner-mockup {
-          position: fixed;
-          left: -140px;
-          bottom: -24px;
-          width: clamp(420px, 56vw, 1080px);
-          height: auto;
-          pointer-events: none;
-          user-select: none;
+          transition: opacity 160ms linear;
           z-index: 4;
-          opacity: 0;
-          transform: translateX(-40px);
-          transition: transform 420ms ease, opacity 420ms ease;
         }
 
-        .work-corner-mockup.is-visible {
+        .iphone-cluster-fixed.is-visible {
           opacity: 1;
-          transform: translateX(0);
         }
 
-        .work-grid {
+        .iphone-cluster-fixed img,
+        .iphone-cluster-mobile img {
+          width: 48%;
+          height: auto;
+          display: block;
+        }
+
+        .iphone-back-left {
+          transform: scale(0.92) translateY(10px);
+          z-index: 1;
+        }
+
+        .iphone-front-center {
+          margin-left: -22%;
+          margin-right: -22%;
+          transform: scale(1);
+          z-index: 3;
+        }
+
+        .iphone-back-right {
+          transform: scale(0.92) translateY(10px);
+          z-index: 2;
+        }
+
+        .cluster-clearance {
+          height: var(--work-gap);
+        }
+
+        .work-grid-post {
           display: flex;
           flex-direction: column;
           gap: var(--work-gap);
-          margin-top: 0;
           position: relative;
           z-index: 5;
         }
 
         .project-card {
+          position: relative;
           min-height: 0;
           background: #171717;
-          border: 1px solid rgba(199, 224, 223, 0.26);
+          border: 1px solid var(--card-outline);
           border-radius: var(--radius-lg);
           padding: var(--card-pad);
-          overflow: hidden;
+          overflow: visible;
+          transition: opacity 280ms ease, transform 280ms ease;
         }
 
-        .placement-1 {
+        .project-card.half-left,
+        .project-card.half-right,
+        .project-card.info-card {
           width: var(--vertical-card-w);
+          display: block;
+        }
+
+        .project-card.half-left {
           align-self: flex-start;
         }
 
-        .placement-2,
-        .placement-3 {
-          width: 100%;
-        }
-
-        .placement-4 {
-          width: var(--vertical-card-w);
+        .project-card.half-right {
           align-self: flex-end;
         }
 
-        .layout-horizontal {
+        .project-card.full-left-media,
+        .project-card.full-right-media {
+          width: 100%;
           display: grid;
           grid-template-columns: minmax(0, var(--media-box-w)) minmax(0, 1fr);
           gap: var(--card-pad);
           align-items: stretch;
-          height: min(532px, calc((100vw - 104px) / 2));
         }
 
-        .layout-horizontal .project-media-wrap {
-          height: auto;
+        .project-card.full-right-media .project-media-wrap {
+          order: 2;
         }
 
-        .layout-horizontal .project-media {
-          object-fit: cover;
-        }
-
-        .layout-horizontal .card-content {
-          align-self: start;
-        }
-
-        .layout-vertical {
-          display: grid;
-          grid-template-columns: 1fr;
-          grid-template-rows: auto 1fr;
-          gap: var(--card-pad);
-          align-content: start;
+        .project-card.full-right-media .card-content {
+          order: 1;
         }
 
         .project-media-wrap {
-          width: min(100%, var(--media-box-w));
+          width: 100%;
           height: var(--work-media-h);
           border-radius: var(--radius-md);
           overflow: hidden;
@@ -565,7 +835,7 @@ function PortfolioApp() {
         .project-media {
           width: 100%;
           height: 100%;
-          object-fit: contain;
+          object-fit: cover;
           display: block;
         }
 
@@ -577,14 +847,119 @@ function PortfolioApp() {
           overflow: visible;
         }
 
-        .layout-horizontal .card-content {
+        .project-card.full-left-media .card-content,
+        .project-card.full-right-media .card-content {
           justify-content: flex-start;
           align-self: start;
         }
 
-        .layout-vertical .card-content {
+        .project-card.half-left .card-content,
+        .project-card.half-right .card-content {
           justify-content: flex-start;
           align-self: start;
+        }
+
+        /* Shared pointer base — rotated-square technique for antialiased edges */
+        .project-card.pointer-right::before,
+        .project-card.pointer-right::after,
+        .project-card.pointer-left::before,
+        .project-card.pointer-left::after,
+        .project-card.pointer-top::before,
+        .project-card.pointer-top::after,
+        .project-card.pointer-bottom::before,
+        .project-card.pointer-bottom::after {
+          content: "";
+          display: block;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        /* pointer-right */
+        .project-card.pointer-right::before {
+          right: 0;
+          top: 50%;
+          width: calc(var(--pointer-size) * 1.42);
+          height: calc(var(--pointer-size) * 1.42);
+          background: #171717;
+          border: 1px solid var(--card-outline);
+          transform: translateY(-50%) translateX(50%) rotate(45deg);
+          z-index: 2;
+        }
+
+        .project-card.pointer-right::after {
+          right: 0px;
+          top: 50%;
+          width: calc(var(--pointer-size) + 3px);
+          height: calc(var(--pointer-size) * 2 + 3px);
+          background: #171717;
+          transform: translateY(-50%);
+          z-index: 3;
+        }
+
+        /* pointer-left */
+        .project-card.pointer-left::before {
+          left: 0;
+          top: 50%;
+          width: calc(var(--pointer-size) * 1.42);
+          height: calc(var(--pointer-size) * 1.42);
+          background: #171717;
+          border: 1px solid var(--card-outline);
+          transform: translateY(-50%) translateX(-50%) rotate(45deg);
+          z-index: 2;
+        }
+
+        .project-card.pointer-left::after {
+          left: 0;
+          top: 50%;
+          width: calc(var(--pointer-size) + 3px);
+          height: calc(var(--pointer-size) * 2 + 3px);
+          background: #171717;
+          transform: translateY(-50%);
+          z-index: 3;
+        }
+
+        /* pointer-top */
+        .project-card.pointer-top::before {
+          left: 50%;
+          top: 0;
+          width: calc(var(--pointer-size) * 1.42);
+          height: calc(var(--pointer-size) * 1.42);
+          background: #171717;
+          border: 1px solid var(--card-outline);
+          transform: translateX(-50%) translateY(-50%) rotate(45deg);
+          z-index: 2;
+        }
+
+        .project-card.pointer-top::after {
+          left: 50%;
+          top: 0;
+          width: calc(var(--pointer-size) * 2 + 3px);
+          height: calc(var(--pointer-size) + 3px);
+          background: #171717;
+          transform: translateX(-50%);
+          z-index: 3;
+        }
+
+        /* pointer-bottom */
+        .project-card.pointer-bottom::before {
+          left: 50%;
+          bottom: 1;
+          width: calc(var(--pointer-size) * 1.42);
+          height: calc(var(--pointer-size) * 1.42);
+          background: #171717;
+          border: 1px solid var(--card-outline);
+          transform: translateX(-50%) translateY(50%) rotate(45deg);
+          z-index: 2;
+        }
+
+        .project-card.pointer-bottom::after {
+          left: 50%;
+          bottom: 0;
+          width: calc(var(--pointer-size) * 2 + 3px);
+          height: calc(var(--pointer-size) + 3px);
+          background: #171717;
+          transform: translateX(-50%);
+          z-index: 3;
         }
 
         .project-card .card-content h2 {
@@ -675,6 +1050,7 @@ function PortfolioApp() {
         .contact-copy h1 {
           margin: 0;
           font-size: clamp(1.84rem, 5.21vw, 4.46rem);
+          font-weight: 400;
           letter-spacing: -0.02em;
         }
 
@@ -814,8 +1190,7 @@ function PortfolioApp() {
 
         @media (max-width: 1140px) {
           .hero-bio {
-            margin-top: 56px;
-            font-size: clamp(2.2rem, 6vw, 4.8rem);
+            font-size: clamp(2rem, 5.6vw, 4.7rem);
             max-width: 760px;
           }
 
@@ -823,62 +1198,130 @@ function PortfolioApp() {
             margin-left: clamp(-180px, -10vw, -100px);
           }
 
-          .hero-block {
-            min-height: clamp(390px, 58vh, 620px);
-          }
-
-          .hero-corner-mockup {
-            width: clamp(230px, 34vw, 500px);
-            right: 0;
+          .macbook-phase-mockup {
+            max-width: min(66vw, 860px);
           }
         }
 
         @media (max-width: 940px) {
+          :root {
+            --mobile-flow-gap: clamp(24px, 6vw, 34px);
+          }
+
           .site-shell,
           .site-nav-inner {
             width: min(var(--max-width), calc(100% - 32px));
+          }
+
+          .site-shell {
+            padding-bottom: var(--mobile-flow-gap) !important;
           }
 
           .site-nav-tabs {
             gap: 18px;
           }
 
-          .hero-block {
-            min-height: clamp(360px, 56vh, 520px);
+          .work-desktop {
+            display: none;
           }
 
-          .hero-corner-mockup {
-            width: clamp(220px, 40vw, 460px);
-            right: 0;
+          .work-mobile {
+            display: block;
+            padding-top: var(--mobile-flow-gap);
+            padding-bottom: 0;
           }
 
-          .work-corner-mockup {
-            left: -96px;
-            width: clamp(340px, 58vw, 680px);
+          .work-mobile > * + * {
+            margin-top: var(--mobile-flow-gap);
           }
 
-          .work-grid {
-            gap: 28px;
+          .work-mobile-hero .hero-bio {
+            margin-left: 0;
+            max-width: none;
+            font-size: calc((100vw - 32px) / 9);
+            line-height: 1.06;
           }
 
-          .placement-1,
-          .placement-2,
-          .placement-3,
-          .placement-4 {
+          .mobile-macbook-wrap {
+            display: flex;
+            justify-content: center;
+          }
+
+          .mobile-macbook-wrap img {
+            display: block;
+            width: min(100%, 780px);
+            height: auto;
+            max-height: 60vh;
+          }
+
+          .iphone-cluster-mobile {
+            width: min(100%, 780px);
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+          }
+
+          .iphone-cluster-mobile .iphone-back-left,
+          .iphone-cluster-mobile .iphone-back-right {
+            transform: translateY(-42px) scale(0.92);
+          }
+
+          .iphone-cluster-mobile .iphone-front-center {
+            transform: translateY(-40px) scale(1);
+          }
+
+          .project-card.info-card,
+          .project-card.full-left-media,
+          .project-card.full-right-media {
             width: 100%;
             align-self: stretch;
           }
 
-          .layout-horizontal,
-          .layout-vertical {
+          .mobile-macbook-wrap + .project-card.pointer-top {
+            margin-top: calc(var(--mobile-flow-gap) + var(--pointer-protrusion));
+          }
+
+          .project-card.pointer-bottom + .iphone-cluster-mobile {
+            margin-top: calc(var(--mobile-flow-gap) + 30px) !important;
+          }
+
+          .project-card.full-left-media,
+          .project-card.full-right-media {
             grid-template-columns: 1fr;
             grid-template-rows: auto auto;
-            height: auto;
+          }
+
+          .iphone-cluster-mobile + .work-grid-post {
+            margin-top: calc(var(--mobile-flow-gap) - 40px) !important;
+          }
+
+          .work-grid-post {
+            gap: var(--mobile-flow-gap);
+          }
+
+          .project-card.full-right-media .project-media-wrap,
+          .project-card.full-right-media .card-content {
+            order: initial;
           }
 
           .project-media-wrap {
             width: 100%;
             height: 300px;
+          }
+
+          .project-card.pointer-right::before,
+          .project-card.pointer-right::after,
+          .project-card.pointer-left::before,
+          .project-card.pointer-left::after {
+            display: none;
+          }
+
+          .project-card.pointer-top::before,
+          .project-card.pointer-top::after,
+          .project-card.pointer-bottom::before,
+          .project-card.pointer-bottom::after {
+            display: block;
           }
 
           .split-card,
@@ -892,7 +1335,31 @@ function PortfolioApp() {
           }
 
           .contact-grid {
+            margin-top: 0;
+            padding-top: var(--mobile-flow-gap);
+            gap: 14px;
             grid-template-columns: 1fr;
+          }
+
+          .contact-copy {
+            display: grid;
+            gap: 14px;
+          }
+
+          .contact-copy h1 {
+            font-size: calc((100vw - 32px) / 7.5);
+            line-height: 1.06;
+            max-width: none;
+            font-weight: 400;
+          }
+
+          .contact-copy p {
+            margin-top: 0;
+          }
+
+          .stack-list {
+            margin-top: 0;
+            padding-top: calc(var(--mobile-flow-gap) + 5px);
           }
         }
 
@@ -919,16 +1386,6 @@ function PortfolioApp() {
             font-size: 0.92rem;
           }
 
-          .hero-block {
-            min-height: auto;
-            padding-bottom: 12px;
-          }
-
-          .hero-corner-mockup,
-          .work-corner-mockup {
-            display: none;
-          }
-
           .project-card,
           .split-card {
             padding: 16px;
@@ -941,6 +1398,14 @@ function PortfolioApp() {
 
           .card-content p {
             font-size: 1rem;
+          }
+
+          .work-mobile-hero .hero-bio {
+            font-size: calc((100vw - 24px) / 9);
+          }
+
+          .contact-copy h1 {
+            font-size: calc((100vw - 24px) / 8.6);
           }
         }
       `}</style>
